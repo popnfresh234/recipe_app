@@ -98,7 +98,8 @@ router.post('/login', (req, res, next) => {
 //* ********************************************
 
 router.post('/logout', (req, res, next) => {
-  res.status(200).send('POST /api/logout');
+  req.session = null;
+  res.status(200).send('Logged out');
 });
 
 module.exports = router;
