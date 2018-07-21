@@ -63,7 +63,33 @@ router.post('/register', (req, res, next) => {
 //* ********************************************
 
 router.post('/login', (req, res, next) => {
-  res.status(200).send('POST /api/login');
+// {
+//   "email": "ajhollid@gmail.com",
+//   "password": "test"
+// }
+  console.log('login');
+  let { email, password } = req.body;
+  email = email.toLowerCase();
+  knex.select()
+    .from('users')
+    .where('email', email)
+    .then((result) => {
+      console.log(result);
+      if (!result.length) {
+        return Promise.reject(new Error('Email not found'));
+      }
+      if (bcrypt.compareSync(password, result[0].password)) {
+        req.session.id = result[0].id;
+        return result[0];
+      }
+      return Promise.reject(new Error('Password incorrect'));
+    })
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      res.status(401).send(err.message);
+    });
 });
 
 //* ********************************************
