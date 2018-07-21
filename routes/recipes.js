@@ -49,7 +49,47 @@ router.get('/:recipe_id', verifyUser, (req, res, next) => {
 //* ********************************************
 
 router.post('/', verifyUser, (req, res, next) => {
-  res.status(201).send('POST /api/recipes');
+  const recipe = req.body;
+  const recipeBase = {
+    name: recipe.name,
+    category: recipe.category,
+    description: recipe.description,
+    directions: recipe.directions,
+    user_id: req.session.id[0],
+  };
+  knex('recipes')
+    .returning('id')
+    .insert(recipeBase)
+    .then((recipeId) => {
+      // Insert ingredients
+      const { ingredients } = recipe;
+      const ingredientNames = ingredients.map(ingredient => ({ name: ingredient.name }));
+      knex('ingredients')
+        .returning('id')
+        .insert(ingredientNames)
+        .then((ingredientIds) => {
+          const recipeIngredients = ingredientIds.map((id, index) => ({
+            quantity: ingredients[index].quantity,
+            recipe_id: recipeId[0],
+            ingredient_id: id,
+          }));
+          knex('recipe_ingredient')
+            .insert(recipeIngredients)
+            .then(() => {
+              res.status(201).send('Successful Insert!');
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send('Bad insert');
+    });
 });
 
 //* ********************************************
