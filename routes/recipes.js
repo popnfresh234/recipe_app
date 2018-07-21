@@ -63,7 +63,7 @@ router.post('/', verifyUser, (req, res, next) => {
     .then((recipeId) => {
       // Insert ingredients
       const { ingredients } = recipe;
-      const ingredientNames = ingredients.map(ingredient => ({ name: ingredient.name }));
+      const ingredientNames = ingredients.map(ingredient => ({ name: ingredient.name, user_id: req.session.id[0] }));
       knex('ingredients')
         .returning('id')
         .insert(ingredientNames)
@@ -77,13 +77,7 @@ router.post('/', verifyUser, (req, res, next) => {
             .insert(recipeIngredients)
             .then(() => {
               res.status(201).send('Successful Insert!');
-            })
-            .catch((err) => {
-              console.log(err);
             });
-        })
-        .catch((err) => {
-          console.log(err);
         });
     })
     .catch((err) => {
