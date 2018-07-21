@@ -31,7 +31,16 @@ router.get('/', verifyUser, (req, res, next) => {
 //* ********************************************
 
 router.get('/:recipe_id', verifyUser, (req, res, next) => {
-  res.status(200).send(`GET /api/recipes/${req.params.recipe_id}`);
+  knex.select()
+    .from('recipes')
+    .where('id', req.params.recipe_id)
+    .then((result) => {
+      if (result.length) {
+        res.status(200).json(result[0]);
+      } else {
+        res.status(404).send('Recipe not found');
+      }
+    });
 });
 
 //* ********************************************
