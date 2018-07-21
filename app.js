@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
@@ -20,6 +21,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cookieSession({
+  name: 'session',
+  secret: 'secret',
+  maxAge: 24 * 60 * 60 * 1000,
+}));
 
 app.use('/api', indexRouter);
 app.use('/api/recipes', recipesRouter);
