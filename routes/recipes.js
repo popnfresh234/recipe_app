@@ -1,6 +1,10 @@
 const express = require('express');
 const verifyUser = require('./utils.js');
 
+const ENV = process.env.ENV || 'development';
+const knexConfig = require('../knexfile');
+const knex = require('knex')(knexConfig[ENV]);
+
 const router = express.Router();
 
 
@@ -10,7 +14,15 @@ const router = express.Router();
 //* ********************************************
 
 router.get('/', verifyUser, (req, res, next) => {
-  res.status(200).send('GET /api/recipes');
+  knex.select()
+    .from('recipes')
+    .then((result) => {
+      if (result.length) {
+        res.status(200).json(result);
+      } else {
+        res.status(204).send('No results');
+      }
+    });
 });
 
 //* ********************************************
