@@ -4,10 +4,17 @@ const bcrypt = require('bcrypt');
 const ENV = process.env.ENV || 'development';
 const knexConfig = require('../knexfile');
 const knex = require('knex')(knexConfig[ENV]);
+const verifyUser = require('./utils.js');
 
 const router = express.Router();
 
-router.get('/:user_id/recipes', (req, res, next) => {
+//* ********************************************
+//* ** GET /api/:user_id/recipes' ***
+//* ** Register a new uesr
+//* ********************************************
+
+
+router.get('/:user_id/recipes', verifyUser, (req, res, next) => {
   res.status(200).send(`GET /api/${req.params.user_id}/recipes`);
 });
 
@@ -67,14 +74,12 @@ router.post('/login', (req, res, next) => {
 //   "email": "ajhollid@gmail.com",
 //   "password": "test"
 // }
-  console.log('login');
   let { email, password } = req.body;
   email = email.toLowerCase();
   knex.select()
     .from('users')
     .where('email', email)
     .then((result) => {
-      console.log(result);
       if (!result.length) {
         return Promise.reject(new Error('Email not found'));
       }

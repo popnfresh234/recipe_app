@@ -1,13 +1,15 @@
 const express = require('express');
+const verifyUser = require('./utils.js');
 
 const router = express.Router();
+
 
 //* ********************************************
 //* ** GET /api/recipes' ***
 //* ** Get all recipes
 //* ********************************************
 
-router.get('/', (req, res, next) => {
+router.get('/', verifyUser, (req, res, next) => {
   res.status(200).send('GET /api/recipes');
 });
 
@@ -16,7 +18,7 @@ router.get('/', (req, res, next) => {
 //* ** Get a specific recipe
 //* ********************************************
 
-router.get('/:recipe_id', (req, res, next) => {
+router.get('/:recipe_id', verifyUser, (req, res, next) => {
   res.status(200).send(`GET /api/recipes/${req.params.recipe_id}`);
 });
 
@@ -25,7 +27,7 @@ router.get('/:recipe_id', (req, res, next) => {
 //* ** Create a new recipe
 //* ********************************************
 
-router.post('/', (req, res, next) => {
+router.post('/', verifyUser, (req, res, next) => {
   res.status(201).send('POST /api/recipes');
 });
 
@@ -34,7 +36,7 @@ router.post('/', (req, res, next) => {
 //* ** Delete a specific recipe
 //* ********************************************
 
-router.delete('/:recipe_id', (req, res, next) => {
+router.delete('/:recipe_id', verifyUser, (req, res, next) => {
   res.status(200).send(`DELETE /api/recipes/${req.params.recipe_id}`);
 });
 
@@ -43,7 +45,7 @@ router.delete('/:recipe_id', (req, res, next) => {
 //* ** Update a specific recipe
 //* ********************************************
 
-router.put('/:recipe_id', (req, res, next) => {
+router.put('/:recipe_id', verifyUser, (req, res, next) => {
   res.status(200).send(`PUT /api/recipes/${req.params.recipe_id}`);
 });
 
