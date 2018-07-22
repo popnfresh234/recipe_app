@@ -10,9 +10,9 @@ new WebpackDevServer( webpack( config ), {
     ignored: /node_modules/,
   },
   historyApiFallback: true,
-  proxy: {
-    '/': 'http://localhost:3001',
-  },
+  // proxy: {
+  //   '/': 'http://localhost:3001',
+  // },
 } )
   .listen( 3000, '0.0.0.0', ( err, result ) => {
     if ( err ) {
