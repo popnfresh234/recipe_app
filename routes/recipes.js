@@ -54,7 +54,6 @@ router.post('/', verifyUser, (req, res, next) => {
     name: recipe.name,
     category: recipe.category,
     description: recipe.description,
-    directions: recipe.directions,
     user_id: req.session.id[0],
   };
   knex('recipes')
@@ -62,19 +61,32 @@ router.post('/', verifyUser, (req, res, next) => {
     .insert(recipeBase)
     .then((recipeId) => {
       // Insert ingredients
-      const { ingredients } = recipe;
-      const ingredientNames = ingredients.map(ingredient => (
+      const { ingredients, directions } = recipe;
+      const dbIngredients = ingredients.map(ingredient => (
         {
           name: ingredient.name,
           quantity: ingredient.quantity,
           recipe_id: recipeId[0],
           user_id: req.session.id[0],
         }));
+      const dbDirections = directions.map(direction => (
+        {
+          description: direction.description,
+          recipe_id: recipeId[0],
+        }
+      ));
       knex('ingredients')
-        .returning('id')
-        .insert(ingredientNames)
+        .insert(dbIngredients)
         .then(() => {
-          res.status(201).send('Recipe Created');
+          knex('directions')
+            .insert(dbDirections)
+            .then(() => {
+              res.status(201).send('Recipe Created');
+            }).catch((err) => {
+              res.status(400).send('Insert directions error');
+            });
+        }).catch((err) => {
+          res.status(400).send('Insert ingredients error');
         });
     })
     .catch((err) => {

@@ -12,7 +12,6 @@ exports.up = function (knex, Promise) {
       table.string('name').notNull();
       table.string('category');
       table.string('description');
-      table.string('directions');
       table.integer('user_id').references('id').inTable('users').onDelete('CASCADE');
     }),
 
