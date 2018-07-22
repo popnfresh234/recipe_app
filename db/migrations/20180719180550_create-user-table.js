@@ -24,6 +24,12 @@ exports.up = function (knex, Promise) {
       table.integer('user_id').references('id').inTable('users').onDelete('CASCADE');
     }),
 
+    knex.schema.createTable('directions', (table) => {
+      table.increments('id').primary();
+      table.string('description').notNull();
+      table.integer('recipe_id').references('id').inTable('recipes').onDelete('CASCADE');
+    }),
+
     knex.schema.createTable('favorites', (table) => {
       table.increments('id').primary();
       table.integer('user_id').references('id').inTable('users').onDelete('CASCADE');
