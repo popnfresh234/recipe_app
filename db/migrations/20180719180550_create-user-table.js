@@ -19,14 +19,9 @@ exports.up = function (knex, Promise) {
     knex.schema.createTable('ingredients', (table) => {
       table.increments('id').primary();
       table.string('name').notNull();
-      table.integer('user_id').references('id').inTable('users').onDelete('CASCADE');
-    }),
-
-    knex.schema.createTable('recipe_ingredient', (table) => {
-      table.increments('id').primary();
-      table.float('quantity');
+      table.float('quantity').notNull();
       table.integer('recipe_id').references('id').inTable('recipes').onDelete('CASCADE');
-      table.integer('ingredient_id').references('id').inTable('ingredients').onDelete('CASCADE');
+      table.integer('user_id').references('id').inTable('users').onDelete('CASCADE');
     }),
 
     knex.schema.createTable('favorites', (table) => {

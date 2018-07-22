@@ -63,21 +63,18 @@ router.post('/', verifyUser, (req, res, next) => {
     .then((recipeId) => {
       // Insert ingredients
       const { ingredients } = recipe;
-      const ingredientNames = ingredients.map(ingredient => ({ name: ingredient.name, user_id: req.session.id[0] }));
+      const ingredientNames = ingredients.map(ingredient => (
+        {
+          name: ingredient.name,
+          quantity: ingredient.quantity,
+          recipe_id: recipeId[0],
+          user_id: req.session.id[0],
+        }));
       knex('ingredients')
         .returning('id')
         .insert(ingredientNames)
-        .then((ingredientIds) => {
-          const recipeIngredients = ingredientIds.map((id, index) => ({
-            quantity: ingredients[index].quantity,
-            recipe_id: recipeId[0],
-            ingredient_id: id,
-          }));
-          knex('recipe_ingredient')
-            .insert(recipeIngredients)
-            .then(() => {
-              res.status(201).send('Successful Insert!');
-            });
+        .then(() => {
+          res.status(201).send('Recipe Created');
         });
     })
     .catch((err) => {
@@ -104,4 +101,38 @@ router.put('/:recipe_id', verifyUser, (req, res, next) => {
   res.status(200).send(`PUT /api/recipes/${req.params.recipe_id}`);
 });
 
+
+//* ********************************************
+//* ** PUT /api/favorite/:user_id/ ***
+//* ** Favorite or Unfavorite a recipe
+//* ********************************************
+
+router.put('/favorite/:recipe_id', verifyUser, (req, res, next) => {
+  // Query db to see if recipe already favoritd
+  knex.select()
+    .from('favorites')
+    .where('recipe_id', req.params.recipe_id)
+    .then((results) => {
+      if (results.length) {
+        knex('favorites')
+          .where('recipe_id', req.params.recipe_id)
+          .del()
+          .then(() => {
+            res.status(200).send('Unfavorited');
+          });
+      } else {
+        knex('favorites')
+          .insert({ user_id: req.session.id[0], recipe_id: req.params.recipe_id })
+          .then(() => {
+            res.status(200).send('Favorited');
+          });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send('Bad favorite');
+    });
+  // If yes, delete
+  // Else, insert
+});
 module.exports = router;

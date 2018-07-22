@@ -9,8 +9,8 @@ const verifyUser = require('./utils.js');
 const router = express.Router();
 
 //* ********************************************
-//* ** GET /api/:user_id/recipes' ***
-//* ** Register a new uesr
+//* ** GET /api/:user_id/recipes ***
+//* ** Get all recipes belonging to a user
 //* ********************************************
 
 
@@ -18,9 +18,8 @@ router.get('/:user_id/recipes', verifyUser, (req, res, next) => {
   res.status(200).send(`GET /api/${req.params.user_id}/recipes`);
 });
 
-
 //* ********************************************
-//* ** POST /api/register' ***
+//* ** POST /api/register ***
 //* ** Register a new uesr
 //* ********************************************
 
@@ -65,7 +64,7 @@ router.post('/register', (req, res, next) => {
 });
 
 //* ********************************************
-//* ** POST /api/login' ***
+//* ** POST /api/login ***
 //* ** Log in a user
 //* ********************************************
 
@@ -98,7 +97,7 @@ router.post('/login', (req, res, next) => {
 });
 
 //* ********************************************
-//* ** POST /api/logout' ***
+//* ** POST /api/logout ***
 //* ** Log out a user
 //* ********************************************
 
