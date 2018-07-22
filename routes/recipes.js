@@ -49,7 +49,9 @@ router.get('/:recipe_id', verifyUser, (req, res, next) => {
 //* ********************************************
 
 router.post('/', verifyUser, (req, res, next) => {
+  let recipeId;
   const recipe = req.body;
+  const { ingredients, directions } = recipe;
   const recipeBase = {
     name: recipe.name,
     category: recipe.category,
@@ -59,39 +61,39 @@ router.post('/', verifyUser, (req, res, next) => {
   knex('recipes')
     .returning('id')
     .insert(recipeBase)
-    .then((recipeId) => {
+    .then((recipeIds) => {
       // Insert ingredients
-      const { ingredients, directions } = recipe;
+      [recipeId] = recipeIds;
       const dbIngredients = ingredients.map(ingredient => (
         {
           name: ingredient.name,
           quantity: ingredient.quantity,
-          recipe_id: recipeId[0],
+          recipe_id: recipeId,
           user_id: req.session.id[0],
         }));
+      return knex('ingredients')
+        .insert(dbIngredients);
+    })
+    .then(() => {
       const dbDirections = directions.map(direction => (
         {
           description: direction.description,
-          recipe_id: recipeId[0],
-        }
-      ));
-      knex('ingredients')
-        .insert(dbIngredients)
-        .then(() => {
-          knex('directions')
-            .insert(dbDirections)
-            .then(() => {
-              res.status(201).send('Recipe Created');
-            }).catch((err) => {
-              res.status(400).send('Insert directions error');
-            });
-        }).catch((err) => {
-          res.status(400).send('Insert ingredients error');
-        });
+          recipe_id: recipeId,
+        }));
+      return knex('directions')
+        .insert(dbDirections);
+    })
+    .then(() => {
+      res.status(200).send('Succesful insert');
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send('Bad insert');
+      knex('recipes')
+        .where('id', recipeId)
+        .del()
+        .then(() => {
+          res.status(400).send('Bad insert');
+        });
     });
 });
 
@@ -101,7 +103,16 @@ router.post('/', verifyUser, (req, res, next) => {
 //* ********************************************
 
 router.delete('/:recipe_id', verifyUser, (req, res, next) => {
-  res.status(200).send(`DELETE /api/recipes/${req.params.recipe_id}`);
+  knex('recipes')
+    .where('id', req.params.recipe_id)
+    .del()
+    .then(() => {
+      res.status(200).send('Recipe deleted');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.stauts(400).send('Delete failed');
+    });
 });
 
 //* ********************************************
@@ -144,7 +155,5 @@ router.put('/favorite/:recipe_id', verifyUser, (req, res, next) => {
       console.log(err);
       res.status(400).send('Bad favorite');
     });
-  // If yes, delete
-  // Else, insert
 });
 module.exports = router;
