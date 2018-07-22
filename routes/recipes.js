@@ -7,6 +7,32 @@ const knex = require('knex')(knexConfig[ENV]);
 
 const router = express.Router();
 
+function getBaseRecipe(req) {
+  return {
+    name: req.body.name,
+    category: req.body.category,
+    description: req.body.description,
+    user_id: req.session.id[0],
+  };
+}
+
+function getIgredientsForDb(ingredients, recipeId, userId) {
+  return ingredients.map(ingredient => (
+    {
+      name: ingredient.name,
+      quantity: ingredient.quantity,
+      recipe_id: recipeId,
+      user_id: userId,
+    }));
+}
+
+function getDirectionsForDb(directions, recipeId) {
+  return directions.map(direction => (
+    {
+      description: direction.description,
+      recipe_id: recipeId,
+    }));
+}
 
 //* ********************************************
 //* ** GET /api/recipes' ***
@@ -50,39 +76,19 @@ router.get('/:recipe_id', verifyUser, (req, res, next) => {
 
 router.post('/', verifyUser, (req, res, next) => {
   let recipeId;
-  const recipe = req.body;
-  const { ingredients, directions } = recipe;
-  const recipeBase = {
-    name: recipe.name,
-    category: recipe.category,
-    description: recipe.description,
-    user_id: req.session.id[0],
-  };
+  const { ingredients, directions } = req.body;
+  const recipeBase = getBaseRecipe(req);
   knex('recipes')
     .returning('id')
     .insert(recipeBase)
     .then((recipeIds) => {
       // Insert ingredients
       [recipeId] = recipeIds;
-      const dbIngredients = ingredients.map(ingredient => (
-        {
-          name: ingredient.name,
-          quantity: ingredient.quantity,
-          recipe_id: recipeId,
-          user_id: req.session.id[0],
-        }));
       return knex('ingredients')
-        .insert(dbIngredients);
+        .insert(getIgredientsForDb(ingredients, recipeId, req.session.id[0]));
     })
-    .then(() => {
-      const dbDirections = directions.map(direction => (
-        {
-          description: direction.description,
-          recipe_id: recipeId,
-        }));
-      return knex('directions')
-        .insert(dbDirections);
-    })
+    .then(() => knex('directions')
+      .insert(getDirectionsForDb(directions, recipeId)))
     .then(() => {
       res.status(200).send('Succesful insert');
     })
@@ -121,7 +127,28 @@ router.delete('/:recipe_id', verifyUser, (req, res, next) => {
 //* ********************************************
 
 router.put('/:recipe_id', verifyUser, (req, res, next) => {
-  res.status(200).send(`PUT /api/recipes/${req.params.recipe_id}`);
+  const recipeBase = getBaseRecipe(req);
+  const { ingredients, directions } = req.body;
+  knex('recipes')
+    .where('id', req.params.recipe_id)
+    .update(recipeBase)
+    .then(() => knex('ingredients')
+      .where('recipe_id', req.params.recipe_id)
+      .del())
+    .then(() => knex('ingredients')
+      .insert(getIgredientsForDb(ingredients, req.params.recipe_id, req.session.id[0])))
+    .then(() => knex('directions')
+      .where('recipe_id', req.params.recipe_id)
+      .del())
+    .then(() => knex('directions')
+      .insert(getDirectionsForDb(directions, req.params.recipe_id)))
+    .then(() => {
+      res.status(200).send('Update successful');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send('Update failed');
+    });
 });
 
 
@@ -157,3 +184,4 @@ router.put('/favorite/:recipe_id', verifyUser, (req, res, next) => {
     });
 });
 module.exports = router;
+
