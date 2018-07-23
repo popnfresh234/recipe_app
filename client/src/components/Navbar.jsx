@@ -7,7 +7,7 @@ class Navbar extends Component {
     super( props );
     this.state = { activeItem: 'home' };
     this.handleItemClick = this.handleItemClick.bind( this );
-    this.handleLogout = this.handleLogout.bind( this );
+    this.handleSignInButton = this.handleSignInButton.bind( this );
   }
 
   handleItemClick( e, target ) {
@@ -16,15 +16,33 @@ class Navbar extends Component {
     } );
   }
 
-  handleLogout() {
-    fetch( '/api/logout', {
-      method: 'POST',
-      credentials: 'same-origin',
-    } ).then( ( result ) => {
-      console.log( result );
-    } ).catch( ( err ) => {
-      console.log( err );
-    } );
+  handleSignInButton( ) {
+    if ( this.props.isLoggedIn ) {
+      fetch( '/api/logout', {
+        method: 'POST',
+        credentials: 'same-origin',
+      } ).then( ( result ) => {
+        this.props.handleAuthState( false );
+      } ).catch( ( err ) => {
+        console.log( err );
+      } );
+    } else {
+      fetch( '/api/login', {
+        method: 'POST',
+        body: JSON.stringify( {
+          email: 'ajhollid@gmail.com',
+          password: 'test',
+        } ),
+        headers: new Headers( {
+          'Content-Type': 'application/json',
+        } ),
+        credentials: 'same-origin',
+      } ).then( ( result ) => {
+        this.props.handleAuthState( true );
+      } ).catch( ( err ) => {
+        console.log( err );
+      } );
+    }
   }
 
   render() {
@@ -40,7 +58,7 @@ class Navbar extends Component {
             <Menu.Item>
               <Input icon="food" placeholder="Search..." />
             </Menu.Item>
-            <Menu.Item name="Logout" onClick={this.handleLogout} />
+            <Menu.Item name={this.props.isLoggedIn ? 'Log out' : 'Sign in'} onClick={this.handleSignInButton} />
           </Menu.Menu>
         </Menu>
       </div>
