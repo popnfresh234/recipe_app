@@ -2,6 +2,9 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 const CleanWebpackPlugin = require( 'clean-webpack-plugin' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
+const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+const BundleAnalyzerPlugin = require( 'webpack-bundle-analyzer' ).BundleAnalyzerPlugin;
 
 const DIST = path.resolve( __dirname, './dist' );
 
@@ -13,6 +16,9 @@ const extractStyles = loaders => ( process.env.NODE_ENV === 'production'
   : ['style-loader'].concat( loaders ) );
 
 module.exports = {
+  node: {
+    fs: 'empty',
+  },
   devtool: 'source-map',
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
@@ -21,7 +27,7 @@ module.exports = {
   output: {
     path: DIST,
     filename: 'bundle.js',
-    publicPath: '/build/',
+    publicPath: '/',
   },
   resolve: {
     alias: {
@@ -72,5 +78,16 @@ module.exports = {
     new ExtractTextPlugin( {
       filename: '[name].[contenthash].css',
     } ),
+    // Create copy of index.html
+    new HtmlWebpackPlugin( {
+      filename: 'index.html',
+      template: 'index.html',
+    } ),
+    // Copy assets folder to dist
+    new CopyWebpackPlugin( [
+      // { from: './assets', to: './assets' },
+      // { from: '.htaccess' },
+    ] ),
+    // new BundleAnalyzerPlugin(),
   ],
 };
