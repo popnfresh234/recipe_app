@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { Route, Switch, Redirect } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
+import { Route, Switch } from 'react-router-dom';
 
 class App extends Component {
   constructor( props ) {
@@ -15,7 +16,12 @@ class App extends Component {
 
   render() {
     return (
-      <Navbar handleAuthState={this.handleAuthState} isLoggedIn={this.state.isLoggedIn} />
+      <div>
+        <Navbar handleAuthState={this.handleAuthState} isLoggedIn={this.state.isLoggedIn} />
+        <Switch>
+          <Route path="/" exact component={Home} />
+        </Switch>
+      </div>
     );
   }
 }

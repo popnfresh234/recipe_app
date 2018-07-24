@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Menu } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 
 /* eslint class-methods-use-this: 0 */ // --> OFF
 class Navbar extends Component {
@@ -50,10 +51,10 @@ class Navbar extends Component {
     return (
       <div>
         <Menu stackable pointing secondary>
-          <Menu.Item name="home" active={activeItem === 'home'} onClick={this.handleItemClick} />
-          <Menu.Item name="all recipes" active={activeItem === 'all recipes'} onClick={this.handleItemClick} />
-          <Menu.Item name="my recipes" active={activeItem === 'my recipes'} onClick={this.handleItemClick} />
-          <Menu.Item name="random!" active={activeItem === 'random!'} onClick={this.handleItemClick} />
+          <Menu.Item as={NavLink} name="home" to="/"active={activeItem === 'home'} onClick={this.handleItemClick} />
+          <Menu.Item as={NavLink} name="all recipes" to="/recipes" active={activeItem === 'all recipes'} onClick={this.handleItemClick} />
+          <Menu.Item as={NavLink} name="my recipes" to="/myrecipes" active={activeItem === 'my recipes'} onClick={this.handleItemClick} />
+          <Menu.Item as={NavLink} name="random!" to="/random" active={activeItem === 'random!'} onClick={this.handleItemClick} />
           <Menu.Menu position="right">
             <Menu.Item>
               <Input icon="food" placeholder="Search..." />
