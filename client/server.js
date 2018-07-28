@@ -11,7 +11,9 @@ new WebpackDevServer( webpack( config ), {
   },
   historyApiFallback: true,
   proxy: {
-    '/': 'http://localhost:3001',
+    '/api': {
+      target: 'http://localhost:3001',
+    },
   },
 } )
   .listen( 3000, '0.0.0.0', ( err, result ) => {
