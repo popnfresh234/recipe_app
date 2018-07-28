@@ -6,12 +6,12 @@ class RecipeOverview extends Component {
     const recipe = this.props.recipe;
     console.log( this.props.recipe.image_url );
     return (
-      <Card fluid>
+      <Card className="recipe-card" fluid>
         <Image fluid src={recipe.image_url} />
         <div className="card-container">
-          <Card.Header>{recipe.name}</Card.Header>
+          <h1>{recipe.name}</h1>
           <Card.Meta>{recipe.description}</Card.Meta>
-          <Divider />
+          <hr />
           <Grid>
             <Grid.Row>
               <Grid.Column width={8}>
@@ -23,7 +23,7 @@ class RecipeOverview extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider />
+          <hr />
         </div>
       </Card>
     );
