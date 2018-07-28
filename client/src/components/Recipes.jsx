@@ -20,9 +20,13 @@ class Recipes extends Component {
     if ( fn ) {
       axios.get( fn() )
         .then( ( baseRecipeResponse ) => {
-          console.log( baseRecipeResponse );
+          console.log( baseRecipeResponse.data );
         } );
     }
+  }
+
+  render() {
+    return ( <p> test </p> );
   }
 }
 
