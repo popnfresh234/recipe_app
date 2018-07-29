@@ -1,1 +1,20 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
+
+.ui.menu .item {
+    color: #4d5359;
+}
+
+.ui.secondary.menu .active.item {
+    color: #f48f29;
+    background: none;
+}
+
+.ui.secondary.menu a.item:hover {
+    color: #f48f29;
+    background: none;
+}
+
+.ui.secondary.menu .active.item:hover {
+    color: #f48f29;
+    background: none;
+}

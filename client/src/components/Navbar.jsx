@@ -49,7 +49,7 @@ class Navbar extends Component {
   render() {
     return (
       <div>
-        <Menu stackable pointing secondary>
+        <Menu size="large" stackable secondary>
           <Menu.Item as={NavLink} name="home" exact to="/" />
           <Menu.Item as={NavLink} name="all recipes" to="/recipes" />
           <Menu.Item as={NavLink} name="my recipes" to="/myrecipes" />
@@ -58,6 +58,7 @@ class Navbar extends Component {
               <Input icon="food" placeholder="Search..." />
             </Menu.Item>
             <Menu.Item name={this.props.isLoggedIn ? 'Log out' : 'Sign in'} onClick={this.handleSignInButton} />
+            {!this.props.isLoggedIn && <Menu.Item as={NavLink} name="Register" to="/register" /> }
           </Menu.Menu>
         </Menu>
       </div>
