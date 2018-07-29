@@ -7,7 +7,7 @@ class RecipeOverview extends Component {
     console.log( this.props.recipe.image_url );
     return (
       <Card className="recipe-card" fluid>
-        <Image fluid src={recipe.image_url} />
+        <Image background="none"fluid src={recipe.image_url} />
         <div className="card-container">
           <h1>{recipe.name}</h1>
           <Card.Meta>{recipe.description}</Card.Meta>

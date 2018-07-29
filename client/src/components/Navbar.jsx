@@ -53,7 +53,6 @@ class Navbar extends Component {
           <Menu.Item as={NavLink} name="home" exact to="/" />
           <Menu.Item as={NavLink} name="all recipes" to="/recipes" />
           <Menu.Item as={NavLink} name="my recipes" to="/myrecipes" />
-          <Menu.Item as={NavLink} name="random!" to="/random" />
           <Menu.Menu position="right">
             <Menu.Item>
               <Input icon="food" placeholder="Search..." />
