@@ -1,0 +1,8 @@
+.ui.cards > .card, .ui.card {
+  box-shadow: none;
+  background-color: #ffffe0;
+}
+
+.ui.cards > .card > .image, .ui.card > .image {
+  background: none;
+}

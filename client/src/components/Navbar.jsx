@@ -47,19 +47,18 @@ class Navbar extends Component {
   }
 
   render() {
-    const { activeItem } = this.state;
     return (
       <div>
-        <Menu stackable pointing secondary>
-          <Menu.Item as={NavLink} name="home" to="/"active={activeItem === 'home'} onClick={this.handleItemClick} />
-          <Menu.Item as={NavLink} name="all recipes" to="/recipes" active={activeItem === 'all recipes'} onClick={this.handleItemClick} />
-          <Menu.Item as={NavLink} name="my recipes" to="/myrecipes" active={activeItem === 'my recipes'} onClick={this.handleItemClick} />
-          <Menu.Item as={NavLink} name="random!" to="/random" active={activeItem === 'random!'} onClick={this.handleItemClick} />
+        <Menu size="large" stackable secondary>
+          <Menu.Item as={NavLink} name="home" exact to="/" />
+          <Menu.Item as={NavLink} name="all recipes" to="/recipes" />
+          <Menu.Item as={NavLink} name="my recipes" to="/myrecipes" />
           <Menu.Menu position="right">
             <Menu.Item>
               <Input icon="food" placeholder="Search..." />
             </Menu.Item>
             <Menu.Item name={this.props.isLoggedIn ? 'Log out' : 'Sign in'} onClick={this.handleSignInButton} />
+            {!this.props.isLoggedIn && <Menu.Item as={NavLink} name="Register" to="/register" /> }
           </Menu.Menu>
         </Menu>
       </div>

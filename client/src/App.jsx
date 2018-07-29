@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-// import { Route, Switch, Redirect } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
 import { Route, Switch } from 'react-router-dom';
+import { Divider } from 'semantic-ui-react';
+import Navbar from './components/Navbar.jsx';
+import Home from './components/Home.jsx';
+import Recipes from './components/Recipes.jsx';
+
 
 class App extends Component {
   constructor( props ) {
@@ -18,8 +21,39 @@ class App extends Component {
     return (
       <div>
         <Navbar handleAuthState={this.handleAuthState} isLoggedIn={this.state.isLoggedIn} />
+        <Divider hidden />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route
+            path="/recipes"
+            exact
+            render={props =>
+                    ( <Recipes
+                      {...props}
+                      rootPath="recipes"
+                      key="recipes"
+                    /> )}
+          />
+          <Route
+            path="/myrecipes"
+            exact
+            render={props =>
+                    ( <Recipes
+                      {...props}
+                      rootPath="myrecipes"
+                      key="myrecipes"
+                    /> )}
+          />
+          <Route
+            path="/random"
+            exact
+            render={props =>
+                    ( <Recipes
+                      {...props}
+                      rootPath="random"
+                      key="random"
+                    /> )}
+          />
         </Switch>
       </div>
     );

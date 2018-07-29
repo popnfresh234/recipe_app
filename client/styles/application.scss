@@ -4,6 +4,12 @@ $computerBreakpoint          : 992px;
 $largeMonitorBreakpoint      : 1200px;
 $widescreenMonitorBreakpoint : 1920px;
 
+body{
+    background-color: #ffffe0;
+    color: #4d5359;
+}
+
+@import 'card-overview';
 // @import 'home';
 // @import 'transaction-pages';
 // @import 'portfolio-main';
