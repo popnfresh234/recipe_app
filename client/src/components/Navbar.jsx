@@ -57,7 +57,8 @@ class Navbar extends Component {
             <Menu.Item>
               <Input icon="food" placeholder="Search..." />
             </Menu.Item>
-            <Menu.Item name={this.props.isLoggedIn ? 'Log out' : 'Sign in'} onClick={this.handleSignInButton} />
+            {this.props.isLoggedIn && <Menu.Item name="Log out" onClick={this.handleSignInButton} />}
+            {!this.props.isLoggedIn && <Menu.Item name="Sign in" onClick={this.handleSignInButton} /> }
             {!this.props.isLoggedIn && <Menu.Item as={NavLink} name="Register" to="/register" /> }
           </Menu.Menu>
         </Menu>
