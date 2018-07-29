@@ -1,0 +1,40 @@
+.login-header {
+    font-style: italic;
+}
+
+.login-button-div {
+    text-align: center;
+}
+
+#login-subheader {
+    margin: 0px;
+    font-style: italic;
+}
+
+#login-segment {
+    background: #303036;
+    max-width: 30vw;
+    margin: 1em auto;
+}
+
+@media only screen and (max-width: $computerBreakpoint) {
+    #login-segment {
+        max-width: 50vw;
+    }
+}
+
+@media only screen and (max-width: $tabletBreakpoint) {
+    #login-segment {
+        max-width: 60vw;
+    }
+}
+
+@media only screen and (max-width: $mobileBreakpoint) {
+    #login-segment {
+        max-width: 80vw;
+    }
+}
+
+
+
+

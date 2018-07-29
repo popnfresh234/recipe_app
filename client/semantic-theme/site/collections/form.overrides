@@ -1,0 +1,7 @@
+.ui.inverted.form input:not([type]){
+    background: #ffffe0;
+}
+
+.ui.form input:not([type]):focus{
+    background: #ffffe0;
+}

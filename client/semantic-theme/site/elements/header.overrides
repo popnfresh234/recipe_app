@@ -4,6 +4,10 @@
 
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
+.ui.header{
+  color: #4d5359;
+}
+
 h1.ui.header,
 .ui.huge.header {
   font-weight: normal;

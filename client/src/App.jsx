@@ -4,6 +4,7 @@ import { Divider } from 'semantic-ui-react';
 import Navbar from './components/Navbar.jsx';
 import Home from './components/Home.jsx';
 import Recipes from './components/Recipes.jsx';
+import Login from './components/Login.jsx';
 
 
 class App extends Component {
@@ -45,13 +46,13 @@ class App extends Component {
                     /> )}
           />
           <Route
-            path="/random"
+            path="/login"
             exact
             render={props =>
-                    ( <Recipes
+                    ( <Login
                       {...props}
-                      rootPath="random"
-                      key="random"
+                      rootPath="signin"
+                      key="signin"
                     /> )}
           />
         </Switch>
