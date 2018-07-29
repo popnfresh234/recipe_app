@@ -13,6 +13,7 @@ function getBaseRecipe( req ) {
     category: req.body.category,
     description: req.body.description,
     image_url: req.body.image_url,
+    duration: req.body.duration,
     user_id: req.session.id,
   };
 }

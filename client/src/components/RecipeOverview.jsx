@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Image, Divider, Grid, Container } from 'semantic-ui-react';
+import { Card, Image, Icon, Grid } from 'semantic-ui-react';
 
 class RecipeOverview extends Component {
   render() {
@@ -15,7 +15,7 @@ class RecipeOverview extends Component {
           <Grid>
             <Grid.Row>
               <Grid.Column width={8}>
-                <p>Test</p>
+                <span><Icon disabled name="clock outline" /></span> <span> {recipe.duration} minutes </span>
               </Grid.Column>
 
               <Grid.Column width={8} textAlign="right">

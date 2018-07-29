@@ -55,7 +55,7 @@ router.post( '/register', ( req, res, next ) => {
         name: body.username,
         password: hashedPassword,
       };
-      req.session.id = id;
+      req.session.id = id[0];
       res.status( 201 ).json( newUser );
     } )
     .catch( ( err ) => {
