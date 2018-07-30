@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Divider } from 'semantic-ui-react';
 import Navbar from './components/Navbar.jsx';
 import Home from './components/Home.jsx';
 import Recipes from './components/Recipes.jsx';
 import Login from './components/Login.jsx';
+import Register from './components/Register.jsx';
 
 
 class App extends Component {
@@ -54,6 +55,18 @@ class App extends Component {
                       handleAuthState={this.handleAuthState}
                       rootPath="signin"
                       key="signin"
+                    /> )}
+          />
+
+          <Route
+            path="/register"
+            exact
+            render={props =>
+                    ( <Register
+                      {...props}
+                      handleAuthState={this.handleAuthState}
+                      rootPath="register"
+                      key="register"
                     /> )}
           />
         </Switch>
