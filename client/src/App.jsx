@@ -21,7 +21,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar handleAuthState={this.handleAuthState} isLoggedIn={this.state.isLoggedIn} />
+        <Navbar isLoggedIn={this.state.isLoggedIn} />
         <Divider hidden />
         <Switch>
           <Route path="/" exact component={Home} />
@@ -51,6 +51,7 @@ class App extends Component {
             render={props =>
                     ( <Login
                       {...props}
+                      handleAuthState={this.handleAuthState}
                       rootPath="signin"
                       key="signin"
                     /> )}

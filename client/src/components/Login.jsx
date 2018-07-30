@@ -1,5 +1,7 @@
+/* eslint class-methods-use-this: 0 */ // --> OFF
+import axios from 'axios';
 import React, { Component } from 'react';
-import { Header, Segment, Form, Button } from 'semantic-ui-react';
+import { Header, Segment, Form, Button, Message } from 'semantic-ui-react';
 
 class Login extends Component {
   constructor( props ) {
@@ -21,18 +23,32 @@ class Login extends Component {
 
   onSubmit( e ) {
     e.preventDefault();
-    fetch( '/api/login', {
-      method: 'POST',
-      body: JSON.stringify( this.state ),
-      headers: new Headers( {
-        'Content-Type': 'application/json',
-      } ),
-      credentials: 'same-origin',
-    } )
-      .then( response => response.json() )
-      .then( ( data ) => {
-
+    axios.post( '/api/login', this.state )
+      .then( ( loginResponse ) => {
+        console.log( loginResponse );
+        this.props.handleAuthState( true, loginResponse.data.id, loginResponse.data.name );
+        this.props.history.push( '/recipes' );
+      } ).catch( ( err ) => {
+        console.log( err );
+        this.setState( { error: 'Credentials incorrect' } );
       } );
+    // fetch( '/api/login', {
+    //   method: 'POST',
+    //   body: JSON.stringify( this.state ),
+    //   headers: new Headers( {
+    //     'Content-Type': 'application/json',
+    //   } ),
+    //   credentials: 'same-origin',
+    // } )
+    //   .then( response => response.json() )
+    //   .then( ( data ) => {
+    //     if ( data.err ) {
+    //       console.log( data.err );
+    //     } else {
+    //       this.props.handleAuthState( true, data.id, data.name );
+    //       this.props.history.push( '/recipes' );
+    //     }
+    //   } );
   }
   render() {
     return (
