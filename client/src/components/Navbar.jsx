@@ -7,44 +7,8 @@ class Navbar extends Component {
   constructor( props ) {
     super( props );
     this.state = { activeItem: 'home' };
-    this.handleItemClick = this.handleItemClick.bind( this );
-    this.handleSignInButton = this.handleSignInButton.bind( this );
   }
 
-  handleItemClick( e, target ) {
-    this.setState( {
-      activeItem: target.name,
-    } );
-  }
-
-  handleSignInButton( ) {
-    if ( this.props.isLoggedIn ) {
-      fetch( '/api/logout', {
-        method: 'POST',
-        credentials: 'same-origin',
-      } ).then( ( result ) => {
-        this.props.handleAuthState( false );
-      } ).catch( ( err ) => {
-        console.log( err );
-      } );
-    } else {
-      fetch( '/api/login', {
-        method: 'POST',
-        body: JSON.stringify( {
-          email: 'ajhollid@gmail.com',
-          password: 'test',
-        } ),
-        headers: new Headers( {
-          'Content-Type': 'application/json',
-        } ),
-        credentials: 'same-origin',
-      } ).then( ( result ) => {
-        this.props.handleAuthState( true );
-      } ).catch( ( err ) => {
-        console.log( err );
-      } );
-    }
-  }
 
   render() {
     return (
@@ -57,7 +21,8 @@ class Navbar extends Component {
             <Menu.Item>
               <Input icon="food" placeholder="Search..." />
             </Menu.Item>
-            <Menu.Item name={this.props.isLoggedIn ? 'Log out' : 'Sign in'} onClick={this.handleSignInButton} />
+            {this.props.isLoggedIn && <Menu.Item as={NavLink} name="Log out" to="/" />}
+            {!this.props.isLoggedIn && <Menu.Item as={NavLink} name="Sign in" to="/login" /> }
             {!this.props.isLoggedIn && <Menu.Item as={NavLink} name="Register" to="/register" /> }
           </Menu.Menu>
         </Menu>
