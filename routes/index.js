@@ -24,13 +24,6 @@ router.get( '/:user_id/recipes', verifyUser, ( req, res, next ) => {
 //* ********************************************
 
 router.post( '/register', ( req, res, next ) => {
-//   {
-//     "username": "Alex",
-//     "email": "ajhollid@gmail.com",
-//     "password": "test",
-//     "confirmPassword": "test"
-//    }
-
   const { body } = req;
   const sanitizedEmail = body.email.toLowerCase();
   const hashedPassword = bcrypt.hashSync( body.password, 10 );
@@ -59,6 +52,7 @@ router.post( '/register', ( req, res, next ) => {
       res.status( 201 ).json( newUser );
     } )
     .catch( ( err ) => {
+      console.log( err.message );
       res.status( 409 ).send( err.message );
     } );
 } );

@@ -1,15 +1,15 @@
-/* eslint class-methods-use-this: 0 */ // --> OFF
-import axios from 'axios';
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Header, Segment, Form, Button, Message } from 'semantic-ui-react';
 
-class Login extends Component {
+class Register extends Component {
   constructor( props ) {
     super( props );
     this.state = {
       email: '',
       password: '',
-      id: '',
+      confirmPassword: '',
+      username: '',
       error: '',
     };
     this.onChange = this.onChange.bind( this );
@@ -23,17 +23,22 @@ class Login extends Component {
 
   onSubmit( e ) {
     e.preventDefault();
-    axios.post( '/api/login', this.state )
-      .then( ( loginResponse ) => {
-        console.log( loginResponse );
-        this.props.handleAuthState( true, loginResponse.data.id, loginResponse.data.name );
-        this.props.history.push( '/recipes' );
-      } ).catch( ( err ) => {
-        console.log( err.message );
-        this.setState( { error: 'Credentials incorrect' } );
-      } );
+    if ( this.state.password !== this.state.confirmPassword ) {
+      this.setState( { error: 'Your passwords don\'t match, please try again.' } );
+    } else {
+      axios.post( '/api/register', this.state )
+        .then( ( registerResponse ) => {
+          console.log( registerResponse );
+          this.props.handleAuthState( true, registerResponse.data.id, registerResponse.data.name );
+          this.props.history.push( '/recipes' );
+        } ).catch( ( err ) => {
+          console.log( err.response );
+          this.setState( {
+            error: err.response.data,
+          } );
+        } );
+    }
   }
-
   render() {
     return (
       <div>
@@ -44,18 +49,18 @@ class Login extends Component {
             {this.state.error && <Message
               content={this.state.error}
             />}
+            <Form.Input label="Name" placeholder="Name" name="username" type="text" onChange={this.onChange} required />
             <Form.Input label="Email" placeholder="Email" name="email" type="email" onChange={this.onChange} required />
             <Form.Input label="Password" placeholder="Password" name="password" type="password" onChange={this.onChange} required />
+            <Form.Input label="Confirm Password" placeholder="Confirm Password" name="confirmPassword" onChange={this.onChange} type="password" required />
             <div className="login-button-div">
-              <Button type="submit">Sign in!</Button>
+              <Button type="submit">Register!</Button>
             </div>
           </Form>
         </Segment>
       </div>
-
-
     );
   }
 }
 
-export default Login;
+export default Register;
