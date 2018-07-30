@@ -32,24 +32,8 @@ class Login extends Component {
         console.log( err );
         this.setState( { error: 'Credentials incorrect' } );
       } );
-    // fetch( '/api/login', {
-    //   method: 'POST',
-    //   body: JSON.stringify( this.state ),
-    //   headers: new Headers( {
-    //     'Content-Type': 'application/json',
-    //   } ),
-    //   credentials: 'same-origin',
-    // } )
-    //   .then( response => response.json() )
-    //   .then( ( data ) => {
-    //     if ( data.err ) {
-    //       console.log( data.err );
-    //     } else {
-    //       this.props.handleAuthState( true, data.id, data.name );
-    //       this.props.history.push( '/recipes' );
-    //     }
-    //   } );
   }
+
   render() {
     return (
       <div>
