@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { Divider } from 'semantic-ui-react';
 import Navbar from './components/Navbar.jsx';
 import Home from './components/Home.jsx';
@@ -21,7 +21,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar isLoggedIn={this.state.isLoggedIn} />
+        <Navbar isLoggedIn={this.state.isLoggedIn} handleAuthState={this.handleAuthState} />
         <Divider hidden />
         <Switch>
           <Route path="/" exact component={Home} />
