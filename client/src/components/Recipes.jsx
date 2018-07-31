@@ -13,7 +13,7 @@ class Recipes extends Component {
   componentDidMount() {
     const pageMap = {
       recipes: () => '/api/recipes',
-      myrecipes: () => '/api/1/recipes/',
+      myrecipes: () => `/api/${this.props.userId}/recipes/`,
       random: () => '/api/recipes/random',
     };
 
@@ -22,7 +22,7 @@ class Recipes extends Component {
       axios.get( fn() )
         .then( ( baseRecipeResponse ) => {
           console.log( baseRecipeResponse.data );
-          const recipes = baseRecipeResponse.data.map( recipe => <RecipeOverview recipe={recipe} /> );
+          const recipes = baseRecipeResponse.data.map( recipe => <RecipeOverview key={recipe.id} recipe={recipe} /> );
           this.setState( {
             recipes,
           } );

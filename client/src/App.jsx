@@ -11,12 +11,31 @@ import Register from './components/Register.jsx';
 class App extends Component {
   constructor( props ) {
     super( props );
-    this.state = { isLoggedIn: false };
+    this.state = {
+      isLoggedIn: '',
+      userId: '',
+      userName: '',
+    };
     this.handleAuthState = this.handleAuthState.bind( this );
+  }
+
+
+  componentWillMount() {
+    const isLoggedIn = JSON.parse( localStorage.getItem( 'isLoggedIn' ) );
+    const userId = localStorage.getItem( 'id' );
+    const userName = localStorage.getItem( 'userName' );
+    this.setState( {
+      isLoggedIn,
+      userId,
+      userName,
+    } );
   }
 
   handleAuthState( isLoggedIn, userId, userName ) {
     this.setState( { isLoggedIn, userId, userName } );
+    localStorage.setItem( 'isLoggedIn', JSON.stringify( isLoggedIn ) );
+    localStorage.setItem( 'userId', userId );
+    localStorage.setItem( 'userName', userName );
   }
 
   render() {
@@ -43,6 +62,7 @@ class App extends Component {
                     ( <Recipes
                       {...props}
                       rootPath="myrecipes"
+                      userId="1"
                       key="myrecipes"
                     /> )}
           />

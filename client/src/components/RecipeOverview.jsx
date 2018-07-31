@@ -7,7 +7,7 @@ class RecipeOverview extends Component {
     console.log( this.props.recipe.image_url );
     return (
       <Card className="recipe-card" fluid>
-        <Image background="none"fluid src={recipe.image_url} />
+        <Image fluid src={recipe.image_url} />
         <div className="card-container">
           <h1>{recipe.name}</h1>
           <Card.Meta>{recipe.description}</Card.Meta>
@@ -15,7 +15,7 @@ class RecipeOverview extends Component {
           <Grid>
             <Grid.Row>
               <Grid.Column width={8}>
-                <span><Icon disabled name="clock outline" /></span> <span> {recipe.duration} minutes </span>
+                <span><Icon disabled className="clock outline" /></span> <span> {recipe.duration} minutes </span>
               </Grid.Column>
 
               <Grid.Column width={8} textAlign="right">
