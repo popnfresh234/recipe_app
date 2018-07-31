@@ -15,7 +15,17 @@ const router = express.Router();
 
 
 router.get( '/:user_id/recipes', verifyUser, ( req, res, next ) => {
-  res.status( 200 ).send( `GET /api/${req.params.user_id}/recipes` );
+  const userId = req.params.user_id;
+  knex.select()
+    .from( 'recipes' )
+    .where( 'user_id', userId )
+    .then( ( results ) => {
+      if ( results.length ) {
+        res.status( 200 ).json( results );
+      } else {
+        res.status( 204 ).send( 'No results' );
+      }
+    } );
 } );
 
 //* ********************************************

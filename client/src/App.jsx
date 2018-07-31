@@ -22,7 +22,7 @@ class App extends Component {
 
   componentWillMount() {
     const isLoggedIn = JSON.parse( localStorage.getItem( 'isLoggedIn' ) );
-    const userId = localStorage.getItem( 'id' );
+    const userId = localStorage.getItem( 'userId' );
     const userName = localStorage.getItem( 'userName' );
     this.setState( {
       isLoggedIn,
@@ -62,7 +62,7 @@ class App extends Component {
                     ( <Recipes
                       {...props}
                       rootPath="myrecipes"
-                      userId="1"
+                      userId={this.state.userId}
                       key="myrecipes"
                     /> )}
           />
