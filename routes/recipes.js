@@ -66,13 +66,13 @@ router.get( '/:recipe_id', verifyUser, ( req, res, next ) => {
     .where( 'id', req.params.recipe_id )
     .then( ( result ) => {
       recipe = result[0];
-      return knex.select( 'name', 'quantity', 'units' )
+      return knex.select( 'id', 'name', 'quantity', 'units' )
         .from( 'ingredients' )
         .where( 'recipe_id', recipe.id );
     } )
     .then( ( ingredientsResults ) => {
       recipe.ingredients = ingredientsResults;
-      return knex.select( 'description' )
+      return knex.select( 'id', 'description' )
         .from( 'directions' )
         .where( 'recipe_id', recipe.id );
     } )

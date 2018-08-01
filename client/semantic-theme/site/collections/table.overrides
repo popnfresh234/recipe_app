@@ -1,0 +1,4 @@
+.ui.table {
+    background: none;
+    border: none;
+}

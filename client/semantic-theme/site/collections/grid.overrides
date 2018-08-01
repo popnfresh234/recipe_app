@@ -1,0 +1,8 @@
+.ui.grid > .row {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.ui.grid > .column:not(.row), .ui.grid > .row > .column {
+    padding-right: 2rem;
+}
