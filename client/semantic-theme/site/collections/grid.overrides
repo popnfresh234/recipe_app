@@ -6,3 +6,7 @@
 .ui.grid > .column:not(.row), .ui.grid > .row > .column {
     padding-right: 2rem;
 }
+
+.ui.grid > .row > .column {
+    padding-top: 2em;
+}

@@ -5,7 +5,7 @@ import { List } from 'semantic-ui-react';
 class Direction extends Component {
   render() {
     return (
-      <p>Test</p>
+      <List.Item>{this.props.description}</List.Item>
     );
   }
 }
