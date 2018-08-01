@@ -23,7 +23,6 @@ class Navbar extends Component {
 
 
   render() {
-    console.log( this.props.isLoggedIn );
     return (
       <div>
         <Menu size="large" stackable secondary>

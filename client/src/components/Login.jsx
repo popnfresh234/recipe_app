@@ -25,7 +25,6 @@ class Login extends Component {
     e.preventDefault();
     axios.post( '/api/login', this.state )
       .then( ( loginResponse ) => {
-        console.log( loginResponse );
         this.props.handleAuthState( true, loginResponse.data.id, loginResponse.data.name );
         this.props.history.push( '/recipes' );
       } ).catch( ( err ) => {

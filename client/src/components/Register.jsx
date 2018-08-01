@@ -28,7 +28,6 @@ class Register extends Component {
     } else {
       axios.post( '/api/register', this.state )
         .then( ( registerResponse ) => {
-          console.log( registerResponse );
           this.props.handleAuthState( true, registerResponse.data.id, registerResponse.data.name );
           this.props.history.push( '/recipes' );
         } ).catch( ( err ) => {

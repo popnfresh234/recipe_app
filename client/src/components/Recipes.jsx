@@ -25,7 +25,6 @@ class Recipes extends Component {
     if ( fn ) {
       axios.get( fn() )
         .then( ( baseRecipeResponse ) => {
-          console.log( baseRecipeResponse.data );
           const recipes = baseRecipeResponse.data.map( recipe => <RecipeOverview key={recipe.id} recipe={recipe} /> );
           this.setState( {
             recipes,
