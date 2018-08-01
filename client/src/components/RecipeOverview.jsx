@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Card, Image, Icon, Grid } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 
 class RecipeOverview extends Component {
   render() {
     const recipe = this.props.recipe;
-    console.log( this.props.recipe.image_url );
+
     return (
-      <Card className="recipe-card" fluid>
+      <Card className="recipe-card" fluid as={NavLink} to={`/recipe-details/${this.props.recipe.id}`}>
         <Image fluid src={recipe.image_url} />
         <div className="card-container">
           <h1>{recipe.name}</h1>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Container } from 'semantic-ui-react';
+
+
 import axios from 'axios';
 import RecipeOverview from './RecipeOverview.jsx';
 
@@ -10,6 +12,8 @@ class Recipes extends Component {
       recipes: [],
     };
   }
+
+
   componentDidMount() {
     const pageMap = {
       recipes: () => '/api/recipes',
@@ -29,6 +33,7 @@ class Recipes extends Component {
         } );
     }
   }
+
 
   render() {
     return (
