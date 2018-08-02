@@ -32,8 +32,17 @@ class NewRecipe extends Component {
     this.addDirection = this.addDirection.bind( this );
     this.updateIngredient = this.updateIngredient.bind( this );
     this.updateDirection = this.updateDirection.bind( this );
+
+    this.onRecipeChange = this.onRecipeChange.bind( this );
   }
 
+  onRecipeChange( e ) {
+    const { recipe } = this.state;
+    recipe[e.target.name] = e.target.value;
+    this.setState( {
+      recipe,
+    } );
+  }
 
   onIngredientChange( e ) {
     const { currentIngredient } = this.state;
@@ -131,7 +140,7 @@ class NewRecipe extends Component {
       />
     ) );
 
-    console.log( this.state.recipe.ingredients );
+    console.log( this.state.recipe );
     return (
       <Grid stackable padded columns="equal">
         <Grid.Row>
@@ -140,7 +149,7 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input /></Table.Cell>
+                  <Table.Cell><Input onChange={this.onRecipeChange} name="name" value={this.state.recipe.name} /></Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -148,7 +157,7 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input /></Table.Cell>
+                  <Table.Cell><Input onChange={this.onRecipeChange} name="category" value={this.state.recipe.category} /></Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -156,7 +165,7 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input /></Table.Cell>
+                  <Table.Cell><Input onChange={this.onRecipeChange} name="description" value={this.state.recipe.description} /></Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -164,7 +173,7 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input /></Table.Cell>
+                  <Table.Cell><Input type="number" onChange={this.onRecipeChange} name="duration" value={this.state.recipe.duration} /></Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -202,8 +211,14 @@ class NewRecipe extends Component {
                     <Button icon="plus" onClick={this.addDirection} />
                   </Table.Cell>
                 </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Button>Submit</Button>
+                  </Table.Cell>
+                </Table.Row>
               </Table.Body>
             </Table>
+
           </Grid.Column>
           <Grid.Column>
                 2
