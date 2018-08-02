@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Input, Header, Button, Icon, Table } from 'semantic-ui-react';
 import NewRecipeIngredient from './NewRecipeIngredient.jsx';
+import NewRecipeDirection from './NewRecipeDirection.jsx';
 
 
 class NewRecipe extends Component {
