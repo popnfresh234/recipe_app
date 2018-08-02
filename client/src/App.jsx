@@ -6,6 +6,7 @@ import Home from './components/Home.jsx';
 import Recipes from './components/Recipes.jsx';
 import Login from './components/Login.jsx';
 import Register from './components/Register.jsx';
+import RecipeDetails from './components/RecipeDetails.jsx';
 
 
 class App extends Component {
@@ -22,7 +23,7 @@ class App extends Component {
 
   componentWillMount() {
     const isLoggedIn = JSON.parse( localStorage.getItem( 'isLoggedIn' ) );
-    const userId = localStorage.getItem( 'id' );
+    const userId = localStorage.getItem( 'userId' );
     const userName = localStorage.getItem( 'userName' );
     this.setState( {
       isLoggedIn,
@@ -62,8 +63,19 @@ class App extends Component {
                     ( <Recipes
                       {...props}
                       rootPath="myrecipes"
-                      userId="1"
+                      userId={this.state.userId}
                       key="myrecipes"
+                    /> )}
+          />
+          <Route
+            path="/recipe-details/:id"
+            exact
+            render={props =>
+                    ( <RecipeDetails
+                      {...props}
+                      rootPath="recipe-details"
+                      userId={this.state.userId}
+                      key="recipe-details"
                     /> )}
           />
           <Route

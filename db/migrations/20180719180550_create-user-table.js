@@ -20,6 +20,7 @@ exports.up = function ( knex, Promise ) {
     knex.schema.createTable( 'ingredients', ( table ) => {
       table.increments( 'id' ).primary();
       table.string( 'name' ).notNull();
+      table.string( 'units' ).notNull();
       table.float( 'quantity' ).notNull();
       table.integer( 'recipe_id' ).references( 'id' ).inTable( 'recipes' ).onDelete( 'CASCADE' );
       table.integer( 'user_id' ).references( 'id' ).inTable( 'users' ).onDelete( 'CASCADE' );

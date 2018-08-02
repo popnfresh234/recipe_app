@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Container } from 'semantic-ui-react';
+
+
 import axios from 'axios';
 import RecipeOverview from './RecipeOverview.jsx';
 
@@ -10,6 +12,8 @@ class Recipes extends Component {
       recipes: [],
     };
   }
+
+
   componentDidMount() {
     const pageMap = {
       recipes: () => '/api/recipes',
@@ -21,7 +25,6 @@ class Recipes extends Component {
     if ( fn ) {
       axios.get( fn() )
         .then( ( baseRecipeResponse ) => {
-          console.log( baseRecipeResponse.data );
           const recipes = baseRecipeResponse.data.map( recipe => <RecipeOverview key={recipe.id} recipe={recipe} /> );
           this.setState( {
             recipes,
@@ -29,6 +32,7 @@ class Recipes extends Component {
         } );
     }
   }
+
 
   render() {
     return (

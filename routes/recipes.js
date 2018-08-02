@@ -23,6 +23,7 @@ function getIgredientsForDb( ingredients, recipeId, userId ) {
     {
       name: ingredient.name,
       quantity: ingredient.quantity,
+      units: ingredient.units,
       recipe_id: recipeId,
       user_id: userId,
     } ) );
@@ -59,15 +60,29 @@ router.get( '/', verifyUser, ( req, res, next ) => {
 //* ********************************************
 
 router.get( '/:recipe_id', verifyUser, ( req, res, next ) => {
+  let recipe = null;
   knex.select()
     .from( 'recipes' )
     .where( 'id', req.params.recipe_id )
     .then( ( result ) => {
-      if ( result.length ) {
-        res.status( 200 ).json( result[0] );
-      } else {
-        res.status( 404 ).send( 'Recipe not found' );
-      }
+      recipe = result[0];
+      return knex.select( 'id', 'name', 'quantity', 'units' )
+        .from( 'ingredients' )
+        .where( 'recipe_id', recipe.id );
+    } )
+    .then( ( ingredientsResults ) => {
+      recipe.ingredients = ingredientsResults;
+      return knex.select( 'id', 'description' )
+        .from( 'directions' )
+        .where( 'recipe_id', recipe.id );
+    } )
+    .then( ( directionsResults ) => {
+      recipe.directions = directionsResults;
+      res.status( 200 ).json( recipe );
+    } )
+    .catch( ( err ) => {
+      console.log( err );
+      res.status( 400 ).send( 'OOPS' );
     } );
 } );
 
