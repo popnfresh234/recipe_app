@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import uuidv1 from 'uuid/v1';
 import { Grid, Input, Header, Button, Icon, Table } from 'semantic-ui-react';
 import NewRecipeIngredient from './NewRecipeIngredient.jsx';
 import NewRecipeDirection from './NewRecipeDirection.jsx';
@@ -21,12 +22,16 @@ class NewRecipe extends Component {
       },
       quantity: '',
       units: '',
+      name: '',
       description: '',
     };
 
-    this.onChange = this.onIngredientChange.bind( this );
+    this.onIngredientChange = this.onIngredientChange.bind( this );
+    this.onDirectionChange = this.onDirectionChange.bind( this );
     this.addIngredient = this.addIngredient.bind( this );
+    this.addDirection = this.addDirection.bind( this );
     this.updateIngredient = this.updateIngredient.bind( this );
+    this.updateDirection = this.updateDirection.bind( this );
   }
 
 
@@ -39,38 +44,90 @@ class NewRecipe extends Component {
     } );
   }
 
+  onDirectionChange( e ) {
+    const { currentDirection } = this.state;
+    currentDirection[e.target.name] = e.target.value;
+    this.setState( {
+      currentDirection,
+      [e.target.name]: e.target.value,
+    } );
+  }
+
 
   addIngredient() {
-    if ( this.state.currentIngredient.description
+    if ( this.state.currentIngredient.name
         && this.state.currentIngredient.units
          && this.state.currentIngredient.quantity ) {
       const { recipe, currentIngredient } = this.state;
+      currentIngredient.id = uuidv1();
       recipe.ingredients.push( currentIngredient );
       this.setState( {
         currentIngredient: {},
         recipe,
         quantity: '',
         units: '',
+        name: '',
+      } );
+    }
+  }
+
+  addDirection() {
+    if ( this.state.currentDirection.description ) {
+      const { recipe, currentDirection } = this.state;
+      currentDirection.id = uuidv1();
+      recipe.directions.push( currentDirection );
+      this.setState( {
+        currentDirection: {},
+        recipe,
         description: '',
       } );
     }
   }
 
   updateIngredient( currentIngredient, position ) {
+    console.log( currentIngredient );
     const { recipe } = this.state;
-    recipe.ingredients[position] = currentIngredient;
+    if ( !currentIngredient.name
+      && !currentIngredient.quantity
+      && !currentIngredient.units ) {
+      recipe.ingredients.splice( position, 1 );
+    } else {
+      recipe.ingredients[position] = currentIngredient;
+    }
+
+    this.setState( { recipe } );
+  }
+
+  updateDirection( currentDirection, position ) {
+    const { recipe } = this.state;
+    if ( !currentDirection.description ) {
+      recipe.directions.splice( position, 1 );
+    } else {
+      recipe.directions[position] = currentDirection;
+    }
     this.setState( { recipe } );
   }
 
   render() {
     const ingredients = this.state.recipe.ingredients.map( ( ingredient, index ) => (
       <NewRecipeIngredient
+        key={ingredient.id}
+        id={ingredient.id}
         updateIngredient={this.updateIngredient}
-        key={index}
         position={index}
         quantity={ingredient.quantity}
         units={ingredient.units}
-        description={ingredient.description}
+        name={ingredient.name}
+      />
+    ) );
+
+    const directions = this.state.recipe.directions.map( ( direction, index ) => (
+      <NewRecipeDirection
+        key={direction.id}
+        id={direction.id}
+        position={index}
+        updateDirection={this.updateDirection}
+        description={direction.description}
       />
     ) );
 
@@ -87,6 +144,30 @@ class NewRecipe extends Component {
                 </Table.Row>
               </Table.Body>
             </Table>
+            <Grid.Row><Header size="tiny">CATEGORY</Header></Grid.Row>
+            <Table unstackable compact>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell><Input /></Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+            <Grid.Row><Header size="tiny">DESCRIPTION</Header></Grid.Row>
+            <Table unstackable compact>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell><Input /></Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+            <Grid.Row><Header size="tiny">DURATION</Header></Grid.Row>
+            <Table unstackable compact>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell><Input /></Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
             <Grid.Row><Header size="tiny">INGREDIENTS</Header></Grid.Row>
 
             <Table unstackable compact>
@@ -95,11 +176,26 @@ class NewRecipe extends Component {
                 <Table.Row>
                   <Table.Cell collapsing><Input value={this.state.quantity} style={{ width: '4rem' }} name="quantity" onChange={this.onIngredientChange} /></Table.Cell>
                   <Table.Cell collapsing><Input value={this.state.units} style={{ width: '4rem' }} name="units" onChange={this.onIngredientChange} /></Table.Cell>
-                  <Table.Cell><Input value={this.state.description} fluid onChange={this.onIngredientChange} name="description" /></Table.Cell>
+                  <Table.Cell><Input value={this.state.name} fluid onChange={this.onIngredientChange} name="name" /></Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>
                     <Button icon="plus" onClick={this.addIngredient} />
+                  </Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+            <Grid.Row><Header size="tiny">DIRECTIONS</Header></Grid.Row>
+
+            <Table unstackable compact>
+              <Table.Body>
+                {directions}
+                <Table.Row>
+                  <Table.Cell><Input value={this.state.description} fluid onChange={this.onDirectionChange} name="description" /></Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Button icon="plus" onClick={this.addDirection} />
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
