@@ -7,6 +7,7 @@ import Recipes from './components/Recipes.jsx';
 import Login from './components/Login.jsx';
 import Register from './components/Register.jsx';
 import RecipeDetails from './components/RecipeDetails.jsx';
+import NewRecipe from './components/NewRecipe.jsx';
 
 
 class App extends Component {
@@ -76,6 +77,17 @@ class App extends Component {
                       rootPath="recipe-details"
                       userId={this.state.userId}
                       key="recipe-details"
+                    /> )}
+          />
+          <Route
+            path="/new-recipe"
+            exact
+            render={props =>
+                    ( <NewRecipe
+                      {...props}
+                      rootPath="new-recipe"
+                      userId={this.state.userId}
+                      key="new-recipe"
                     /> )}
           />
           <Route
