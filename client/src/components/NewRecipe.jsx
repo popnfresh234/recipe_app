@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
-import { Grid, Input, Header, Button, Icon, Table } from 'semantic-ui-react';
+import { Grid, Input, Header, Button, Form, Table } from 'semantic-ui-react';
 import NewRecipeIngredient from './NewRecipeIngredient.jsx';
 import NewRecipeDirection from './NewRecipeDirection.jsx';
 
@@ -191,7 +191,11 @@ class NewRecipe extends Component {
               <Table.Body>
                 {directions}
                 <Table.Row>
-                  <Table.Cell><Input value={this.state.description} fluid onChange={this.onDirectionChange} name="description" /></Table.Cell>
+                  <Table.Cell>
+                    <Form>
+                      <Form.TextArea value={this.state.description} onChange={this.onDirectionChange} name="description" />
+                    </Form>
+                  </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>

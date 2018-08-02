@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Table } from 'semantic-ui-react';
+import { Input, Form, Table } from 'semantic-ui-react';
 
 
 class NewRecipeDirection extends Component {
@@ -26,7 +26,7 @@ class NewRecipeDirection extends Component {
   render() {
     return (
       <Table.Row>
-        <Table.Cell><Input value={this.state.description} fluid name="description" onChange={this.onUpdateDirection} /></Table.Cell>
+        <Table.Cell><Form><Form.TextArea value={this.state.description} name="description" onChange={this.onUpdateDirection} /></Form></Table.Cell>
       </Table.Row> );
   }
 }
