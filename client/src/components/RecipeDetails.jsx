@@ -61,34 +61,34 @@ class RecipeDetails extends Component {
 
   render() {
     return (
-      <div>
-        <Grid stackable columns="equal">
-          <Grid.Row>
-            <Grid.Column >
-              <Image size="medium" centered src={this.state.recipe.image_url} />
-            </Grid.Column>
-            <Grid.Column className="green-column">
-              <Header textAlign="center">{this.state.recipe.name}</Header>
-              <Table.Cell><Header>INGREDIENTS</Header></Table.Cell>
-              <Table unstackable compact>
-                <Table.Body>
 
-                  {this.state.ingredients}
-                </Table.Body>
-              </Table>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column className="green-column" style={{ paddingLeft: '2em' }}>
-              <Header>DIRECTIONS</Header>
-              <List ordered>
-                {this.state.directions}
-              </List>
-            </Grid.Column>
-            <Grid.Column />
-          </Grid.Row>
-        </Grid>
-      </div>
+      <Grid stackable columns="equal">
+        <Grid.Row>
+          <Grid.Column >
+            <Image size="medium" centered src={this.state.recipe.image_url} />
+          </Grid.Column>
+          <Grid.Column className="green-column">
+            <Header textAlign="center">{this.state.recipe.name}</Header>
+            <Header>INGREDIENTS</Header>
+            <Table unstackable compact>
+              <Table.Body>
+
+                {this.state.ingredients}
+              </Table.Body>
+            </Table>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column className="green-column" style={{ paddingLeft: '2em' }}>
+            <Header>DIRECTIONS</Header>
+            <List ordered>
+              {this.state.directions}
+            </List>
+          </Grid.Column>
+          <Grid.Column />
+        </Grid.Row>
+      </Grid>
+
     );
   }
 }
