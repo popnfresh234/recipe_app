@@ -19,6 +19,7 @@ class RecipeDetails extends Component {
   componentDidMount() {
     axios.get( `/api/recipes/${this.props.match.params.id}` )
       .then( ( result ) => {
+        console.log( result.data );
         const ingredients = this.calcIngredients( result.data.ingredients, 1 );
 
         const directions = result.data.directions
@@ -79,13 +80,14 @@ class RecipeDetails extends Component {
 
     return (
 
-      <Grid stackable columns="equal" verticalAlign="middle">
+      <Grid stackable columns="equal">
         <Grid.Row style={rowStyle}>
-          <Grid.Column style={columnStyle} >
+          <Grid.Column verticalAlign="middle" style={columnStyle} >
             <Image size="medium" centered src={this.state.recipe.image_url} />
           </Grid.Column>
           <Grid.Column className="green-column" style={columnStyle}>
-            <Header textAlign="center">{this.state.recipe.name}</Header>
+            <Header textAlign="center" id="header-recipe-title">{this.state.recipe.name}</Header>
+            <Header textAlign="center" size="tiny" id="header-author">By {this.state.recipe.author}</Header>
             <Header>INGREDIENTS</Header>
             <Table unstackable compact>
               <Table.Body>
@@ -102,7 +104,10 @@ class RecipeDetails extends Component {
               {this.state.directions}
             </List>
           </Grid.Column>
-          <Grid.Column style={columnStyle} />
+          <Grid.Column style={columnStyle}>
+            <Header>Notes</Header>
+            {this.state.recipe.note}
+          </Grid.Column>
         </Grid.Row>
       </Grid>
 
