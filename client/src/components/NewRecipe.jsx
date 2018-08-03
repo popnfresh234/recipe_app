@@ -248,10 +248,14 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 {ingredients}
-
+                <Table.Row>
+                  <Table.Cell>QUANTITY</Table.Cell>
+                  <Table.Cell>UNITS</Table.Cell>
+                  <Table.Cell>NAME</Table.Cell>
+                </Table.Row>
                 <Table.Row>
                   <Table.Cell collapsing><Input error={!this.state.recipe.ingredients.length} value={this.state.quantity} style={{ width: '4rem' }} name="quantity" onChange={this.onIngredientChange} /></Table.Cell>
-                  <Table.Cell collapsing><Input error={!this.state.recipe.ingredients.length} value={this.state.units} style={{ width: '4rem' }} name="units" onChange={this.onIngredientChange} /></Table.Cell>
+                  <Table.Cell collapsing><Input error={!this.state.recipe.ingredients.length} value={this.state.units} style={{ width: '8rem' }} name="units" onChange={this.onIngredientChange} /></Table.Cell>
                   <Table.Cell><Input error={!this.state.recipe.ingredients.length} value={this.state.name} fluid onChange={this.onIngredientChange} name="name" /></Table.Cell>
                 </Table.Row>
 

@@ -31,7 +31,7 @@ class NewRecipeIngredient extends Component {
     return (
       <Table.Row>
         <Table.Cell collapsing ><Input name="quantity" style={{ width: '4rem' }} value={this.state.quantity} onChange={this.onUpdateIngredient} /></Table.Cell>
-        <Table.Cell collapsing ><Input name="units"style={{ width: '4rem' }} value={this.state.units} onChange={this.onUpdateIngredient} /></Table.Cell>
+        <Table.Cell collapsing ><Input name="units" style={{ width: '8rem' }} value={this.state.units} onChange={this.onUpdateIngredient} /></Table.Cell>
         <Table.Cell><Input name="name" fluid value={this.state.name} onChange={this.onUpdateIngredient} /></Table.Cell>
       </Table.Row>
     );
