@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Card, Container } from 'semantic-ui-react';
-
-
 import axios from 'axios';
 import RecipeOverview from './RecipeOverview.jsx';
 

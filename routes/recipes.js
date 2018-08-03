@@ -8,11 +8,12 @@ const knex = require( 'knex' )( knexConfig[ENV] );
 const router = express.Router();
 
 function getBaseRecipe( req ) {
+  const image_url = req.body.image_url ? req.body.image_url : 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png';
   return {
     name: req.body.name,
     category: req.body.category,
     description: req.body.description,
-    image_url: req.body.image_url,
+    image_url,
     duration: req.body.duration,
     user_id: req.session.id,
   };

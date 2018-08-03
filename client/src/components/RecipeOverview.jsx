@@ -13,7 +13,7 @@ class RecipeOverview extends Component {
           <h1>{recipe.name}</h1>
           <Card.Meta>{recipe.description}</Card.Meta>
           <hr />
-          <Grid>
+          <Grid >
             <Grid.Row>
               <Grid.Column width={8}>
                 <span><Icon disabled className="clock outline" /></span> <span> {recipe.duration} minutes </span>

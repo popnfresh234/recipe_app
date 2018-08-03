@@ -46,7 +46,16 @@ class App extends Component {
         <Navbar isLoggedIn={this.state.isLoggedIn} handleAuthState={this.handleAuthState} />
         <Divider hidden />
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route
+            path="/"
+            exact
+            render={props =>
+                    ( <Home
+                      {...props}
+                      rootPath="home"
+                      key="home"
+                    /> )}
+          />
           <Route
             path="/recipes"
             exact

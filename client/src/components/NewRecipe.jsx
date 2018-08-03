@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
+import axios from 'axios';
 import { Grid, Input, Header, Button, Form, Table, Message } from 'semantic-ui-react';
 import NewRecipeIngredient from './NewRecipeIngredient.jsx';
 import NewRecipeDirection from './NewRecipeDirection.jsx';
@@ -36,6 +37,8 @@ class NewRecipe extends Component {
     this.onRecipeChange = this.onRecipeChange.bind( this );
     this.onSubmitRecipe = this.onSubmitRecipe.bind( this );
     this.validateRecipe = this.validateRecipe.bind( this );
+    this.scrollToDirections = this.scrollToDirections.bind( this );
+    this.scrollToIngredients = this.scrollToIngredients.bind( this );
   }
 
   onRecipeChange( e ) {
@@ -71,6 +74,13 @@ class NewRecipe extends Component {
         error: '',
       } );
       console.log( this.state.recipe );
+      console.log( this.props.userId );
+      axios.post( '/api/recipes', this.state.recipe )
+        .then( ( response ) => {
+          console.log( response );
+        } ).catch( ( err ) => {
+          console.log( err );
+        } );
     }
   }
 
@@ -105,6 +115,7 @@ class NewRecipe extends Component {
         name: '',
       } );
     }
+    this.scrollToIngredients();
   }
 
   addDirection() {
@@ -118,6 +129,7 @@ class NewRecipe extends Component {
         description: '',
       } );
     }
+    this.scrollToDirections();
   }
 
   updateIngredient( currentIngredient, position ) {
@@ -143,6 +155,13 @@ class NewRecipe extends Component {
     this.setState( { recipe } );
   }
 
+  scrollToDirections() {
+    this.addDirectionsButton.scrollIntoView( { behavior: 'smooth' } );
+  }
+
+  scrollToIngredients() {
+    this.addIngredientsButton.scrollIntoView( { behavior: 'smooth' } );
+  }
 
   render() {
     const ingredients = this.state.recipe.ingredients.map( ( ingredient, index ) => (
@@ -212,14 +231,18 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 {ingredients}
+
                 <Table.Row>
                   <Table.Cell collapsing><Input error={!this.state.recipe.ingredients.length} value={this.state.quantity} style={{ width: '4rem' }} name="quantity" onChange={this.onIngredientChange} /></Table.Cell>
                   <Table.Cell collapsing><Input error={!this.state.recipe.ingredients.length} value={this.state.units} style={{ width: '4rem' }} name="units" onChange={this.onIngredientChange} /></Table.Cell>
                   <Table.Cell><Input error={!this.state.recipe.ingredients.length} value={this.state.name} fluid onChange={this.onIngredientChange} name="name" /></Table.Cell>
                 </Table.Row>
+
                 <Table.Row>
                   <Table.Cell>
-                    <Button icon="plus" onClick={this.addIngredient} />
+                    <div ref={( el ) => { this.addIngredientsButton = el; }}>
+                      <Button icon="plus" onClick={this.addIngredient} />
+                    </div>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
@@ -229,6 +252,7 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 {directions}
+
                 <Table.Row>
                   <Table.Cell>
                     <Form>
@@ -243,7 +267,9 @@ class NewRecipe extends Component {
               <Table.Body>
                 <Table.Row>
                   <Table.Cell>
+
                     <Button icon="plus" onClick={this.addDirection} />
+
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -265,7 +291,9 @@ class NewRecipe extends Component {
                 2
           </Grid.Column>
         </Grid.Row>
+        <div ref={( el ) => { this.addDirectionsButton = el; }} />
       </Grid>
+
     );
   }
 }
