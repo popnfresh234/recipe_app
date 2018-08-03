@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
 import axios from 'axios';
 import { Grid, Input, Header, Button, Form, Table, Message } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
 import NewRecipeIngredient from './NewRecipeIngredient.jsx';
 import NewRecipeDirection from './NewRecipeDirection.jsx';
 
@@ -14,22 +15,28 @@ class NewRecipe extends Component {
       currentDirection: {},
       recipe: {
         name: '',
+        author: this.props.userName,
         category: '',
         description: '',
         image_url: '',
         duration: '',
+        note: '',
         ingredients: [],
         directions: [],
+
       },
       quantity: '',
       units: '',
       name: '',
+      note: '',
       description: '',
       error: '',
+      submitted: false,
     };
 
     this.onIngredientChange = this.onIngredientChange.bind( this );
     this.onDirectionChange = this.onDirectionChange.bind( this );
+    this.onNoteChange = this.onNoteChange.bind( this );
     this.addIngredient = this.addIngredient.bind( this );
     this.addDirection = this.addDirection.bind( this );
     this.updateIngredient = this.updateIngredient.bind( this );
@@ -67,17 +74,26 @@ class NewRecipe extends Component {
     } );
   }
 
+  onNoteChange( e ) {
+    const { recipe } = this.state;
+    recipe[e.target.name] = e.target.value;
+    this.setState( {
+      recipe,
+      [e.target.name]: e.target.value,
+    } );
+  }
+
   onSubmitRecipe() {
     const valid = this.validateRecipe();
     if ( valid ) {
       this.setState( {
         error: '',
       } );
-      console.log( this.state.recipe );
-      console.log( this.props.userId );
       axios.post( '/api/recipes', this.state.recipe )
-        .then( ( response ) => {
-          console.log( response );
+        .then( () => {
+          this.setState( {
+            submitted: true,
+          } );
         } ).catch( ( err ) => {
           console.log( err );
         } );
@@ -188,6 +204,7 @@ class NewRecipe extends Component {
 
     return (
       <Grid stackable padded columns="equal">
+        {this.state.submitted && <Redirect to="/recipes" />}
         <Grid.Row>
           <Grid.Column>
             <Grid.Row><Header size="tiny">RECIPE NAME</Header></Grid.Row>
@@ -248,11 +265,9 @@ class NewRecipe extends Component {
               </Table.Body>
             </Table>
             <Grid.Row><Header size="tiny">DIRECTIONS</Header></Grid.Row>
-
             <Table unstackable compact>
               <Table.Body>
                 {directions}
-
                 <Table.Row>
                   <Table.Cell>
                     <Form>
@@ -260,23 +275,33 @@ class NewRecipe extends Component {
                     </Form>
                   </Table.Cell>
                 </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Button icon="plus" onClick={this.addDirection} />
+                  </Table.Cell>
+                </Table.Row>
               </Table.Body>
             </Table>
 
+
+            <Grid.Row><Header size="tiny">Notes</Header></Grid.Row>
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
                   <Table.Cell>
-
-                    <Button icon="plus" onClick={this.addDirection} />
-
+                    <Form>
+                      <Form.TextArea value={this.state.note} onChange={this.onNoteChange} name="note" />
+                    </Form>
                   </Table.Cell>
                 </Table.Row>
+              </Table.Body>
+            </Table>
+            <Table unstackable compact>
+              <Table.Body>
                 <Table.Row>
                   <Table.Cell collapsing>
                     <Button onClick={this.onSubmitRecipe}>Submit</Button>
                   </Table.Cell>
-
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>
@@ -290,9 +315,7 @@ class NewRecipe extends Component {
           <Grid.Column>
                 2
           </Grid.Column>
-
         </Grid.Row>
-
       </Grid>
 
     );

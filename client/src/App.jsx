@@ -96,6 +96,7 @@ class App extends Component {
                       {...props}
                       rootPath="new-recipe"
                       userId={this.state.userId}
+                      userName={this.state.userName}
                       key="new-recipe"
                     /> )}
           />
