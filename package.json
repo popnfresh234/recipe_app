@@ -6,6 +6,7 @@
     "start": "nodemon bin/www"
   },
   "dependencies": {
+    "aws-sdk": "^2.286.2",
     "bcrypt": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-beta.3",
