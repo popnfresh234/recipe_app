@@ -156,11 +156,11 @@ class NewRecipe extends Component {
   }
 
   scrollToDirections() {
-    this.addDirectionsButton.scrollIntoView( { behavior: 'smooth' } );
+    this.directionScrollTarget.scrollIntoView( { behavior: 'smooth' } );
   }
 
   scrollToIngredients() {
-    this.addIngredientsButton.scrollIntoView( { behavior: 'smooth' } );
+    this.ingredientScrollTarget.scrollIntoView( { behavior: 'smooth' } );
   }
 
   render() {
@@ -240,7 +240,7 @@ class NewRecipe extends Component {
 
                 <Table.Row>
                   <Table.Cell>
-                    <div ref={( el ) => { this.addIngredientsButton = el; }}>
+                    <div ref={( el ) => { this.ingredientScrollTarget = el; }}>
                       <Button icon="plus" onClick={this.addIngredient} />
                     </div>
                   </Table.Cell>
@@ -285,13 +285,14 @@ class NewRecipe extends Component {
                 </Table.Row>
               </Table.Body>
             </Table>
-
+            <div style={{ height: '5rem' }} ref={( el ) => { this.directionScrollTarget = el; }} />
           </Grid.Column>
           <Grid.Column>
                 2
           </Grid.Column>
+
         </Grid.Row>
-        <div ref={( el ) => { this.addDirectionsButton = el; }} />
+
       </Grid>
 
     );

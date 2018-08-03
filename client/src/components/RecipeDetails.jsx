@@ -60,14 +60,31 @@ class RecipeDetails extends Component {
 
 
   render() {
+    const rowStyle = {
+      paddingTop: 0,
+      paddingBottom: 0,
+    };
+
+    const columnStyle = {
+      paddingRight: '2rem',
+      paddingTop: '2rem',
+    };
+
+    const leftColumnStyle = {
+      paddingRight: '2rem',
+      paddingTop: '2rem',
+      paddingLeft: '2rem',
+    };
+
+
     return (
 
       <Grid stackable columns="equal">
-        <Grid.Row>
-          <Grid.Column >
+        <Grid.Row style={rowStyle}>
+          <Grid.Column style={columnStyle} >
             <Image size="medium" centered src={this.state.recipe.image_url} />
           </Grid.Column>
-          <Grid.Column className="green-column">
+          <Grid.Column className="green-column" style={columnStyle}>
             <Header textAlign="center">{this.state.recipe.name}</Header>
             <Header>INGREDIENTS</Header>
             <Table unstackable compact>
@@ -78,14 +95,14 @@ class RecipeDetails extends Component {
             </Table>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
-          <Grid.Column className="green-column" style={{ paddingLeft: '2em' }}>
+        <Grid.Row style={rowStyle}>
+          <Grid.Column className="green-column" style={leftColumnStyle}>
             <Header>DIRECTIONS</Header>
             <List ordered>
               {this.state.directions}
             </List>
           </Grid.Column>
-          <Grid.Column />
+          <Grid.Column style={columnStyle} />
         </Grid.Row>
       </Grid>
 
