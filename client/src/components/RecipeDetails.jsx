@@ -68,18 +68,18 @@ class RecipeDetails extends Component {
     const columnStyle = {
       paddingRight: '2rem',
       paddingTop: '2rem',
+      paddingBottom: '2rem',
     };
 
     const leftColumnStyle = {
-      paddingRight: '2rem',
-      paddingTop: '2rem',
+      ...columnStyle,
       paddingLeft: '2rem',
     };
 
 
     return (
 
-      <Grid stackable columns="equal">
+      <Grid stackable columns="equal" verticalAlign="middle">
         <Grid.Row style={rowStyle}>
           <Grid.Column style={columnStyle} >
             <Image size="medium" centered src={this.state.recipe.image_url} />
