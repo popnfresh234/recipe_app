@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import uuidv1 from 'uuid/v1';
-import { Grid, Input, Header, Button, Form, Table } from 'semantic-ui-react';
+import { Grid, Input, Header, Button, Form, Table, Message } from 'semantic-ui-react';
 import NewRecipeIngredient from './NewRecipeIngredient.jsx';
 import NewRecipeDirection from './NewRecipeDirection.jsx';
 
@@ -24,6 +24,7 @@ class NewRecipe extends Component {
       units: '',
       name: '',
       description: '',
+      error: '',
     };
 
     this.onIngredientChange = this.onIngredientChange.bind( this );
@@ -32,8 +33,9 @@ class NewRecipe extends Component {
     this.addDirection = this.addDirection.bind( this );
     this.updateIngredient = this.updateIngredient.bind( this );
     this.updateDirection = this.updateDirection.bind( this );
-
     this.onRecipeChange = this.onRecipeChange.bind( this );
+    this.onSubmitRecipe = this.onSubmitRecipe.bind( this );
+    this.validateRecipe = this.validateRecipe.bind( this );
   }
 
   onRecipeChange( e ) {
@@ -60,6 +62,31 @@ class NewRecipe extends Component {
       currentDirection,
       [e.target.name]: e.target.value,
     } );
+  }
+
+  onSubmitRecipe() {
+    const valid = this.validateRecipe();
+    if ( valid ) {
+      this.setState( {
+        error: '',
+      } );
+      console.log( this.state.recipe );
+    }
+  }
+
+  validateRecipe() {
+    if ( this.state.recipe.name
+      && this.state.recipe.category
+      && this.state.recipe.description
+      && this.state.recipe.duration
+      && this.state.recipe.ingredients.length
+      && this.state.recipe.directions.length ) {
+      return true;
+    }
+    this.setState( {
+      error: 'Please fill in all fields',
+    } );
+    return false;
   }
 
 
@@ -94,7 +121,6 @@ class NewRecipe extends Component {
   }
 
   updateIngredient( currentIngredient, position ) {
-    console.log( currentIngredient );
     const { recipe } = this.state;
     if ( !currentIngredient.name
       && !currentIngredient.quantity
@@ -116,6 +142,7 @@ class NewRecipe extends Component {
     }
     this.setState( { recipe } );
   }
+
 
   render() {
     const ingredients = this.state.recipe.ingredients.map( ( ingredient, index ) => (
@@ -140,7 +167,6 @@ class NewRecipe extends Component {
       />
     ) );
 
-    console.log( this.state.recipe );
     return (
       <Grid stackable padded columns="equal">
         <Grid.Row>
@@ -149,7 +175,7 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input onChange={this.onRecipeChange} name="name" value={this.state.recipe.name} /></Table.Cell>
+                  <Table.Cell><Input error={!this.state.recipe.name} onChange={this.onRecipeChange} name="name" value={this.state.recipe.name} /></Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -157,7 +183,7 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input onChange={this.onRecipeChange} name="category" value={this.state.recipe.category} /></Table.Cell>
+                  <Table.Cell><Input error={!this.state.recipe.category} onChange={this.onRecipeChange} name="category" value={this.state.recipe.category} /></Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -165,7 +191,9 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input onChange={this.onRecipeChange} name="description" value={this.state.recipe.description} /></Table.Cell>
+                  <Table.Cell>
+                    <Input error={!this.state.recipe.description} onChange={this.onRecipeChange} name="description" value={this.state.recipe.description} />
+                  </Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -173,7 +201,9 @@ class NewRecipe extends Component {
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><Input type="number" onChange={this.onRecipeChange} name="duration" value={this.state.recipe.duration} /></Table.Cell>
+                  <Table.Cell>
+                    <Input error={!this.state.recipe.duration} type="number" onChange={this.onRecipeChange} name="duration" value={this.state.recipe.duration} />
+                  </Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -183,9 +213,9 @@ class NewRecipe extends Component {
               <Table.Body>
                 {ingredients}
                 <Table.Row>
-                  <Table.Cell collapsing><Input value={this.state.quantity} style={{ width: '4rem' }} name="quantity" onChange={this.onIngredientChange} /></Table.Cell>
-                  <Table.Cell collapsing><Input value={this.state.units} style={{ width: '4rem' }} name="units" onChange={this.onIngredientChange} /></Table.Cell>
-                  <Table.Cell><Input value={this.state.name} fluid onChange={this.onIngredientChange} name="name" /></Table.Cell>
+                  <Table.Cell collapsing><Input error={!this.state.recipe.ingredients.length} value={this.state.quantity} style={{ width: '4rem' }} name="quantity" onChange={this.onIngredientChange} /></Table.Cell>
+                  <Table.Cell collapsing><Input error={!this.state.recipe.ingredients.length} value={this.state.units} style={{ width: '4rem' }} name="units" onChange={this.onIngredientChange} /></Table.Cell>
+                  <Table.Cell><Input error={!this.state.recipe.ingredients.length} value={this.state.name} fluid onChange={this.onIngredientChange} name="name" /></Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>
@@ -202,18 +232,29 @@ class NewRecipe extends Component {
                 <Table.Row>
                   <Table.Cell>
                     <Form>
-                      <Form.TextArea value={this.state.description} onChange={this.onDirectionChange} name="description" />
+                      <Form.TextArea error={!this.state.recipe.directions.length} value={this.state.description} onChange={this.onDirectionChange} name="description" />
                     </Form>
                   </Table.Cell>
                 </Table.Row>
+              </Table.Body>
+            </Table>
+
+            <Table unstackable compact>
+              <Table.Body>
                 <Table.Row>
                   <Table.Cell>
                     <Button icon="plus" onClick={this.addDirection} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
+                  <Table.Cell collapsing>
+                    <Button onClick={this.onSubmitRecipe}>Submit</Button>
+                  </Table.Cell>
+
+                </Table.Row>
+                <Table.Row>
                   <Table.Cell>
-                    <Button>Submit</Button>
+                    {this.state.error && <Message negative header="Error" content={this.state.error} />}
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
