@@ -5,7 +5,7 @@ import { Grid, Input, Header, Button, Form, Table, Message } from 'semantic-ui-r
 import { Redirect } from 'react-router-dom';
 import NewRecipeIngredient from './NewRecipeIngredient.jsx';
 import NewRecipeDirection from './NewRecipeDirection.jsx';
-
+import ImageUpload from './ImageUpload.jsx';
 
 class NewRecipe extends Component {
   constructor( props ) {
@@ -23,6 +23,7 @@ class NewRecipe extends Component {
         note: '',
         ingredients: [],
         directions: [],
+        picture: '',
 
       },
       quantity: '',
@@ -47,6 +48,7 @@ class NewRecipe extends Component {
     this.scrollToDirections = this.scrollToDirections.bind( this );
     this.scrollToIngredients = this.scrollToIngredients.bind( this );
   }
+
 
   onRecipeChange( e ) {
     const { recipe } = this.state;
@@ -317,7 +319,7 @@ class NewRecipe extends Component {
             <div style={{ height: '5rem' }} ref={( el ) => { this.directionScrollTarget = el; }} />
           </Grid.Column>
           <Grid.Column>
-                2
+            <ImageUpload />
           </Grid.Column>
         </Grid.Row>
       </Grid>
