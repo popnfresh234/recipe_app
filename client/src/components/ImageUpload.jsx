@@ -17,9 +17,10 @@ class ImageUpload extends Component {
 
   handleChange( e ) {
     const file = e.target.files[0];
-    const newName = `${uuidv4()}.${file.name.replace( /^.*\./, '' )}`;
-    const renamedFile = new File( [file], newName, { type: file.type } );
-    this.resize( renamedFile, 200, 200, ( resizedDataUrl ) => {
+    const ext = file.name.replace( /^.*\./, '' );
+    // const newName = `${uuidv4()}.${file.name.replace( /^.*\./, '' )}`;
+    // const renamedFile = new File( [file], newName, { type: file.type } );
+    this.resize( file, 200, 200, ext, ( resizedDataUrl ) => {
       this.setState( {
         fileUrl: resizedDataUrl,
       } );
@@ -28,12 +29,15 @@ class ImageUpload extends Component {
       for ( let i = 0; i < binary.length; i++ ) {
         array.push( binary.charCodeAt( i ) );
       }
-      const blob = new Blob( [new Uint8Array( array )], { type: 'image/jpeg' } );
-      this.props.addImage( blob );
+      const blob = new Blob( [new Uint8Array( array )], { type: `image/${ext}` } );
+      console.log( blob );
+      const file = new File( [blob], `${uuidv4()}.${ext}`, { type: blob.type } );
+      console.log( file );
+      this.props.addImage( file );
     } );
   }
 
-  resize( file, maxWidth, maxHeight, fn ) {
+  resize( file, maxWidth, maxHeight, extension, fn ) {
     const reader = new FileReader();
     const { resizeImage } = this;
     reader.readAsDataURL( file );
@@ -42,13 +46,13 @@ class ImageUpload extends Component {
       const image = new Image();
       image.src = dataUrl;
       image.onload = () => {
-        const resizedDataUrl = resizeImage( image, maxWidth, maxHeight, 1 );
+        const resizedDataUrl = resizeImage( image, maxWidth, maxHeight, 1, extension );
         fn( resizedDataUrl );
       };
     };
   }
 
-  resizeImage( image, maxWidth, maxHeight, quality ) {
+  resizeImage( image, maxWidth, maxHeight, quality, extension ) {
     const canvas = document.createElement( 'canvas' );
     let width = image.width;
     let height = image.height;
