@@ -20,7 +20,7 @@ class ImageUpload extends Component {
     const ext = file.name.replace( /^.*\./, '' );
     // const newName = `${uuidv4()}.${file.name.replace( /^.*\./, '' )}`;
     // const renamedFile = new File( [file], newName, { type: file.type } );
-    this.resize( file, 200, 200, ext, ( resizedDataUrl ) => {
+    this.resize( file, 1000, 1000, ext, ( resizedDataUrl ) => {
       this.setState( {
         fileUrl: resizedDataUrl,
       } );
@@ -54,27 +54,27 @@ class ImageUpload extends Component {
 
   resizeImage( image, maxWidth, maxHeight, quality, extension ) {
     const canvas = document.createElement( 'canvas' );
-    let width = image.width;
-    let height = image.height;
+    const width = image.width;
+    const height = image.height;
 
-    if ( width > height ) {
-      if ( width > maxWidth ) {
-        height = Math.round( height * maxWidth / width );
-        width = maxWidth;
-      }
-    } else if ( height > maxHeight ) {
-      width = Math.round( width * maxHeight / height );
-      height = maxHeight;
-    }
+    // if ( width > height ) {
+    //   if ( width > maxWidth ) {
+    //     height = Math.round( height * maxWidth / width );
+    //     width = maxWidth;
+    //   }
+    // } else if ( height > maxHeight ) {
+    //   width = Math.round( width * maxHeight / height );
+    //   height = maxHeight;
+    // }
 
     canvas.width = maxWidth;
     canvas.height = maxHeight;
     const ctx = canvas.getContext( '2d' );
-    const startX = ( maxWidth - width ) / 2;
-    const startY = ( maxHeight - height ) / 2;
+    const sourceX = ( image.width / 2 ) - ( maxWidth / 2 );
+    const sourceY = ( image.height / 2 ) - ( maxHeight / 2 );
     ctx.fillStyle = '#FFFFE0';
     ctx.fillRect( 0, 0, maxWidth, maxHeight );
-    ctx.drawImage( image, startX, startY, width, height );
+    ctx.drawImage( image, sourceX, sourceY, maxWidth, maxHeight, 0, 0, maxWidth, maxHeight );
     return canvas.toDataURL( 'image/jpeg', quality );
   }
 

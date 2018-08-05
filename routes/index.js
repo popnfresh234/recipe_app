@@ -5,25 +5,11 @@ const ENV = process.env.ENV || 'development';
 const knexConfig = require( '../knexfile' );
 const knex = require( 'knex' )( knexConfig[ENV] );
 const verifyUser = require( './utils.js' );
-const aws = require( 'aws-sdk' );
-const request = require( 'request' );
+
 require( 'dotenv' ).config();
 
 const router = express.Router();
 
-router.post( '/test', ( req, res, next ) => {
-  aws.config.update( { accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET, region: 'us-west-2' } );
-  const s3 = new aws.S3();
-  const params = { Bucket: process.env.AWS_BUCKET, Key: req.files.image.name, Body: req.files.image.data };
-  s3.putObject( params, ( err, data ) => {
-    if ( err ) {
-      console.log( err );
-    } else {
-      console.log( data );
-      console.log( 'success!' );
-    }
-  } );
-} );
 
 //* ********************************************
 //* ** GET /api/:user_id/recipes ***
