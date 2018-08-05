@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LinesEllipsis from 'react-lines-ellipsis';
 import { Card, Image, Icon, Grid } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
@@ -8,9 +9,19 @@ class RecipeOverview extends Component {
 
     return (
       <Card className="recipe-card" fluid as={NavLink} to={`/recipe-details/${this.props.recipe.id}`}>
-        <Image fluid src={recipe.image_url} />
+        <div style={{ height: '15rem', width: '100%', overflow: 'hidden' }}>
+          <Image src={recipe.image_url} style={{ maxWidth: '100%', backgroundSize: 'cover' }} />
+        </div>
         <div className="card-container">
-          <h1>{recipe.name}</h1>
+          <h1 style={{ height: '5rem', lineHeight: '2.1rem', textAlign: 'center' }}>
+            <LinesEllipsis
+              text={recipe.name}
+              maxLine="2"
+              ellipsis="..."
+              trimRight
+              basedOn="letters"
+            />
+          </h1>
           <Card.Meta>{recipe.description}</Card.Meta>
           <hr />
           <Grid >

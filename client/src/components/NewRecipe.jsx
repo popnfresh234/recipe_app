@@ -23,7 +23,6 @@ class NewRecipe extends Component {
         note: '',
         ingredients: [],
         directions: [],
-        picture: '',
 
       },
       quantity: '',
@@ -33,6 +32,7 @@ class NewRecipe extends Component {
       description: '',
       error: '',
       submitted: false,
+      image: '',
     };
 
     this.onIngredientChange = this.onIngredientChange.bind( this );
@@ -47,6 +47,7 @@ class NewRecipe extends Component {
     this.validateRecipe = this.validateRecipe.bind( this );
     this.scrollToDirections = this.scrollToDirections.bind( this );
     this.scrollToIngredients = this.scrollToIngredients.bind( this );
+    this.addImage = this.addImage.bind( this );
   }
 
 
@@ -91,7 +92,10 @@ class NewRecipe extends Component {
       this.setState( {
         error: '',
       } );
-      axios.post( '/api/recipes', this.state.recipe )
+      const formData = new FormData();
+      formData.append( 'file', this.state.image );
+      formData.append( 'recipe', JSON.stringify( this.state.recipe ) );
+      axios.post( '/api/recipes', formData )
         .then( () => {
           this.setState( {
             submitted: true,
@@ -117,6 +121,11 @@ class NewRecipe extends Component {
     return false;
   }
 
+  addImage( image ) {
+    this.setState( {
+      image,
+    } );
+  }
 
   addIngredient() {
     if ( this.state.currentIngredient.name
@@ -319,7 +328,7 @@ class NewRecipe extends Component {
             <div style={{ height: '5rem' }} ref={( el ) => { this.directionScrollTarget = el; }} />
           </Grid.Column>
           <Grid.Column>
-            <ImageUpload />
+            <ImageUpload addImage={this.addImage} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
