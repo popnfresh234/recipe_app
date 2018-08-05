@@ -9,9 +9,9 @@ class RecipeOverview extends Component {
 
     return (
       <Card className="recipe-card" fluid as={NavLink} to={`/recipe-details/${this.props.recipe.id}`}>
-        <div style={{ height: '15rem', width: '100%', overflow: 'hidden' }}>
-          <Image src={recipe.image_url} style={{ maxWidth: '100%', backgroundSize: 'cover' }} />
-        </div>
+
+        <Image src={recipe.image_url} />
+
         <div className="card-container">
           <h1 style={{ height: '5rem', lineHeight: '2.1rem', textAlign: 'center' }}>
             <LinesEllipsis
