@@ -26,7 +26,7 @@ class NewRecipeDirection extends Component {
   render() {
     return (
       <Table.Row>
-        <Table.Cell><Form><Form.TextArea value={this.state.description} name="description" onChange={this.onUpdateDirection} /></Form></Table.Cell>
+        <Table.Cell><Form className="direction-text-area"><Form.TextArea value={this.state.description} name="description" onChange={this.onUpdateDirection} /></Form></Table.Cell>
       </Table.Row> );
   }
 }

@@ -1,0 +1,3 @@
+.ingredient-input.ui.input input {
+    background: rgba(177,216,185,0.5);
+}
