@@ -1,3 +1,29 @@
 .ingredient-input.ui.input input {
     background: rgba(177,216,185,0.5);
 }
+
+.ingredient-quantity-input.ui.input input {
+    width: 5rem;
+}
+
+.new-recipe-quantity-input.ui.input input {
+    width: 4rem;
+}
+
+.new-recipe-units-input.ui.input input {
+    width: 8rem;
+}
+
+.new-recipe-added-quantity-input.ui.input input {
+    width: 4rem;
+    background-color: rgba(177,216,185,0.5);
+}
+
+.new-recipe-added-units-input.ui.input input {
+    width: 8rem;
+    background-color: rgba(177,216,185,0.5);
+}
+
+.new-recipe-added-name-input.ui.input input {
+    background-color: rgba(177,216,185,0.5);
+}

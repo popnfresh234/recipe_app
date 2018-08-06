@@ -80,8 +80,8 @@ class RecipeDetails extends Component {
 
     return (
 
-      <Grid stackable columns="equal">
-        <Grid.Row style={rowStyle}>
+      <Grid className="recipe-detail-grid" stackable columns="equal">
+        <Grid.Row >
           <Grid.Column verticalAlign="middle" style={columnStyle} >
             <Image size="medium" centered src={this.state.recipe.image_url} />
           </Grid.Column>

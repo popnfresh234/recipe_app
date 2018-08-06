@@ -13,7 +13,7 @@ class RecipeOverview extends Component {
         <Image src={recipe.image_url} fluid />
 
         <div className="card-container">
-          <h1 style={{ height: '5rem', lineHeight: '2.1rem', textAlign: 'center' }}>
+          <h1 className="recipe-overview-title">
             <LinesEllipsis
               text={recipe.name}
               maxLine="2"

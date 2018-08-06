@@ -6,7 +6,7 @@ class Ingredient extends Component {
   render() {
     return (
       <Table.Row>
-        <Table.Cell collapsing><Input type="number" style={{ width: '5rem' }} onChange={e => this.props.onQuantityChange( this.props.quantity, e )} /></Table.Cell>
+        <Table.Cell collapsing><Input className="ingredient-quantity-input"type="number" onChange={e => this.props.onQuantityChange( this.props.quantity, e )} /></Table.Cell>
         <Table.Cell textAlign="right" collapsing>{this.props.multipliedQuantity}</Table.Cell>
         <Table.Cell collapsing>{this.props.units}</Table.Cell>
         <Table.Cell>{this.props.name}</Table.Cell>
