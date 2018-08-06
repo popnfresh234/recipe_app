@@ -46,6 +46,37 @@ function getDirectionsForDb( directions, recipeId ) {
     } ) );
 }
 
+function insertRecipe( req, res ) {
+  const recipe = JSON.parse( req.body.recipe );
+  const fileName = req.files ? req.files.file.name : '';
+  let recipeId;
+  const { ingredients, directions } = recipe;
+  const recipeBase = getBaseRecipe( req, recipe, fileName );
+  knex( 'recipes' )
+    .returning( 'id' )
+    .insert( recipeBase )
+    .then( ( recipeIds ) => {
+      // Insert ingredients
+      [recipeId] = recipeIds;
+      return knex( 'ingredients' )
+        .insert( getIgredientsForDb( ingredients, recipeId, req.session.id ) );
+    } )
+    .then( () => knex( 'directions' )
+      .insert( getDirectionsForDb( directions, recipeId ) ) )
+    .then( () => {
+      res.status( 200 ).send( 'Succesful insert' );
+    } )
+    .catch( ( err ) => {
+      console.log( err );
+      knex( 'recipes' )
+        .where( 'id', recipeId )
+        .del()
+        .then( () => {
+          res.status( 400 ).send( 'Bad insert' );
+        } );
+    } );
+}
+
 //* ********************************************
 //* ** GET /api/recipes' ***
 //* ** Get all recipes
@@ -101,43 +132,24 @@ router.get( '/:recipe_id', verifyUser, ( req, res, next ) => {
 //* ********************************************
 
 router.post( '/', verifyUser, ( req, res, next ) => {
-  console.log( req.files.file.name );
-  aws.config.update( { accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET, region: 'us-west-2' } );
-  const s3 = new aws.S3();
-  const params = { Bucket: process.env.AWS_BUCKET, Key: req.files.file.name, Body: req.files.file.data };
-  s3.putObject( params, ( err, data ) => {
-    if ( err ) {
-      console.log( err );
-    } else {
-      const recipe = JSON.parse( req.body.recipe );
-      let recipeId;
-      const { ingredients, directions } = recipe;
-      const recipeBase = getBaseRecipe( req, recipe, req.files.file.name );
-      knex( 'recipes' )
-        .returning( 'id' )
-        .insert( recipeBase )
-        .then( ( recipeIds ) => {
-          // Insert ingredients
-          [recipeId] = recipeIds;
-          return knex( 'ingredients' )
-            .insert( getIgredientsForDb( ingredients, recipeId, req.session.id ) );
-        } )
-        .then( () => knex( 'directions' )
-          .insert( getDirectionsForDb( directions, recipeId ) ) )
-        .then( () => {
-          res.status( 200 ).send( 'Succesful insert' );
-        } )
-        .catch( ( err ) => {
-          console.log( err );
-          knex( 'recipes' )
-            .where( 'id', recipeId )
-            .del()
-            .then( () => {
-              res.status( 400 ).send( 'Bad insert' );
-            } );
-        } );
-    }
-  } );
+  if ( req.files ) {
+    aws.config.update( { accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET, region: 'us-west-2' } );
+    const s3 = new aws.S3();
+    const params = {
+      Bucket: process.env.AWS_BUCKET,
+      Key: req.files.file.name,
+      Body: req.files.file.data,
+    };
+    s3.putObject( params, ( err, data ) => {
+      if ( err ) {
+        console.log( err );
+      } else {
+        insertRecipe( req, res );
+      }
+    } );
+  } else {
+    insertRecipe( req, res );
+  }
 } );
 
 //* ********************************************

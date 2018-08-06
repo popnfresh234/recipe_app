@@ -69,6 +69,7 @@ class NewRecipe extends Component {
   }
 
   onDirectionChange( e ) {
+    console.log( 'change' );
     const { currentDirection } = this.state;
     currentDirection[e.target.name] = e.target.value;
     this.setState( {
@@ -107,14 +108,26 @@ class NewRecipe extends Component {
   }
 
   validateRecipe() {
+    if ( this.state.description
+      || this.state.units
+      || this.state.quantity
+      || this.state.name ) {
+      this.setState( {
+        error: 'Make sure to add your ingredients/directions to the recipe by pressing the + button!',
+      } );
+      return false;
+    }
+
     if ( this.state.recipe.name
       && this.state.recipe.category
       && this.state.recipe.description
       && this.state.recipe.duration
       && this.state.recipe.ingredients.length
-      && this.state.recipe.directions.length ) {
+      && this.state.recipe.directions.length
+    ) {
       return true;
     }
+
     this.setState( {
       error: 'Please fill in all fields',
     } );
