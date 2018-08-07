@@ -8,7 +8,7 @@ class ImageUpload extends Component {
   constructor( props ) {
     super( props );
     this.state = {
-      fileUrl: '',
+      fileUrl: 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png',
     };
     this.handleChange = this.handleChange.bind( this );
     this.resize = this.resize.bind( this );
@@ -64,9 +64,9 @@ class ImageUpload extends Component {
 
   render() {
     return (
-      <div>
-        <SemanticImage src={this.state.fileUrl} />
-        <Input type="file" onChange={this.handleChange} />
+      <div >
+        <SemanticImage style={{ margin: '0 auto' }} size="medium" src={this.state.fileUrl} />
+        <Input className="new-recipe-image-input" type="file" onChange={this.handleChange} />
       </div>
     );
   }

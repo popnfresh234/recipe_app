@@ -227,7 +227,7 @@ class NewRecipe extends Component {
     ) );
 
     return (
-      <Grid stackable padded columns="equal">
+      <Grid stackable padded divided columns="equal">
         {this.state.submitted && <Redirect to="/recipes" />}
         <Grid.Row>
           <Grid.Column>
@@ -322,13 +322,26 @@ class NewRecipe extends Component {
                     </Form>
                   </Table.Cell>
                 </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <div ref={( el ) => { this.directionScrollTarget = el; }} />
+                  </Table.Cell>
+                </Table.Row>
               </Table.Body>
             </Table>
+
+          </Grid.Column>
+          <Grid.Column textAlign="center">
+            <ImageUpload addImage={this.addImage} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
             <Table unstackable compact>
               <Table.Body>
                 <Table.Row>
                   <Table.Cell collapsing>
-                    <Button onClick={this.onSubmitRecipe}>Submit</Button>
+                    <Button size="massive" onClick={this.onSubmitRecipe}>Submit</Button>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -336,16 +349,12 @@ class NewRecipe extends Component {
                     {this.state.error && <Message negative header="Error" content={this.state.error} />}
                   </Table.Cell>
                 </Table.Row>
+
               </Table.Body>
             </Table>
-            <div style={{ height: '5rem' }} ref={( el ) => { this.directionScrollTarget = el; }} />
-          </Grid.Column>
-          <Grid.Column>
-            <ImageUpload addImage={this.addImage} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
-
     );
   }
 }

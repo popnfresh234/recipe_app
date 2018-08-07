@@ -27,3 +27,7 @@
 .new-recipe-added-name-input.ui.input input {
     background-color: rgba(177,216,185,0.5);
 }
+
+.new-recipe-image-input.ui.input input {
+    margin: 2rem;
+}
