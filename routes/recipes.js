@@ -1,19 +1,28 @@
+const ENV = process.env.ENV || 'development';
+
 const express = require( 'express' );
 const verifyUser = require( './utils.js' );
+const multer = require( 'multer' );
 
-const ENV = process.env.ENV || 'development';
 const knexConfig = require( '../knexfile' );
 const knex = require( 'knex' )( knexConfig[ENV] );
+const aws = require( 'aws-sdk' );
+
+const upload = multer( { dest: 'uploads/' } ).single( 'image' );
+
 
 const router = express.Router();
 
-function getBaseRecipe( req ) {
+function getBaseRecipe( req, recipe, fileName ) {
+  const image_url = fileName ? `https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/${fileName}` : 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png';
   return {
-    name: req.body.name,
-    category: req.body.category,
-    description: req.body.description,
-    image_url: req.body.image_url,
-    duration: req.body.duration,
+    name: recipe.name,
+    author: recipe.author,
+    category: recipe.category,
+    description: recipe.description,
+    image_url,
+    duration: recipe.duration,
+    note: recipe.note,
     user_id: req.session.id,
   };
 }
@@ -35,6 +44,37 @@ function getDirectionsForDb( directions, recipeId ) {
       description: direction.description,
       recipe_id: recipeId,
     } ) );
+}
+
+function insertRecipe( req, res ) {
+  const recipe = JSON.parse( req.body.recipe );
+  const fileName = req.files ? req.files.file.name : '';
+  let recipeId;
+  const { ingredients, directions } = recipe;
+  const recipeBase = getBaseRecipe( req, recipe, fileName );
+  knex( 'recipes' )
+    .returning( 'id' )
+    .insert( recipeBase )
+    .then( ( recipeIds ) => {
+      // Insert ingredients
+      [recipeId] = recipeIds;
+      return knex( 'ingredients' )
+        .insert( getIgredientsForDb( ingredients, recipeId, req.session.id ) );
+    } )
+    .then( () => knex( 'directions' )
+      .insert( getDirectionsForDb( directions, recipeId ) ) )
+    .then( () => {
+      res.status( 200 ).send( 'Succesful insert' );
+    } )
+    .catch( ( err ) => {
+      console.log( err );
+      knex( 'recipes' )
+        .where( 'id', recipeId )
+        .del()
+        .then( () => {
+          res.status( 400 ).send( 'Bad insert' );
+        } );
+    } );
 }
 
 //* ********************************************
@@ -92,32 +132,24 @@ router.get( '/:recipe_id', verifyUser, ( req, res, next ) => {
 //* ********************************************
 
 router.post( '/', verifyUser, ( req, res, next ) => {
-  let recipeId;
-  const { ingredients, directions } = req.body;
-  const recipeBase = getBaseRecipe( req );
-  knex( 'recipes' )
-    .returning( 'id' )
-    .insert( recipeBase )
-    .then( ( recipeIds ) => {
-      // Insert ingredients
-      [recipeId] = recipeIds;
-      return knex( 'ingredients' )
-        .insert( getIgredientsForDb( ingredients, recipeId, req.session.id ) );
-    } )
-    .then( () => knex( 'directions' )
-      .insert( getDirectionsForDb( directions, recipeId ) ) )
-    .then( () => {
-      res.status( 200 ).send( 'Succesful insert' );
-    } )
-    .catch( ( err ) => {
-      console.log( err );
-      knex( 'recipes' )
-        .where( 'id', recipeId )
-        .del()
-        .then( () => {
-          res.status( 400 ).send( 'Bad insert' );
-        } );
+  if ( req.files ) {
+    aws.config.update( { accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET, region: 'us-west-2' } );
+    const s3 = new aws.S3();
+    const params = {
+      Bucket: process.env.AWS_BUCKET,
+      Key: req.files.file.name,
+      Body: req.files.file.data,
+    };
+    s3.putObject( params, ( err, data ) => {
+      if ( err ) {
+        console.log( err );
+      } else {
+        insertRecipe( req, res );
+      }
     } );
+  } else {
+    insertRecipe( req, res );
+  }
 } );
 
 //* ********************************************

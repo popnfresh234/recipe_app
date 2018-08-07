@@ -2,3 +2,7 @@
     background: none;
     border: none;
 }
+
+.ui.table tr td {
+    border-top: none;
+}

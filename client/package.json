@@ -65,13 +65,14 @@
     "axios": "^0.18.0",
     "react": "15.4.2",
     "react-dom": "15.4.2",
+    "react-lines-ellipsis": "^0.13.2",
     "react-reveal-text": "^0.1.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.1.4",
     "react-timeago": "^4.1.9",
     "semantic-ui-react": "^0.79.1",
     "serve": "^6.5.6",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.2"
   },
   "bugs": {
     "url": "https://github.com/popnfresh234/recipe_app/issues"

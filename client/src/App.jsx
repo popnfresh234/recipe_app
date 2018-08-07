@@ -7,6 +7,7 @@ import Recipes from './components/Recipes.jsx';
 import Login from './components/Login.jsx';
 import Register from './components/Register.jsx';
 import RecipeDetails from './components/RecipeDetails.jsx';
+import NewRecipe from './components/NewRecipe.jsx';
 
 
 class App extends Component {
@@ -45,7 +46,16 @@ class App extends Component {
         <Navbar isLoggedIn={this.state.isLoggedIn} handleAuthState={this.handleAuthState} />
         <Divider hidden />
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route
+            path="/"
+            exact
+            render={props =>
+                    ( <Home
+                      {...props}
+                      rootPath="home"
+                      key="home"
+                    /> )}
+          />
           <Route
             path="/recipes"
             exact
@@ -76,6 +86,18 @@ class App extends Component {
                       rootPath="recipe-details"
                       userId={this.state.userId}
                       key="recipe-details"
+                    /> )}
+          />
+          <Route
+            path="/new-recipe"
+            exact
+            render={props =>
+                    ( <NewRecipe
+                      {...props}
+                      rootPath="new-recipe"
+                      userId={this.state.userId}
+                      userName={this.state.userName}
+                      key="new-recipe"
                     /> )}
           />
           <Route

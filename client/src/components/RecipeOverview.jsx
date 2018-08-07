@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LinesEllipsis from 'react-lines-ellipsis';
 import { Card, Image, Icon, Grid } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
@@ -8,12 +9,22 @@ class RecipeOverview extends Component {
 
     return (
       <Card className="recipe-card" fluid as={NavLink} to={`/recipe-details/${this.props.recipe.id}`}>
-        <Image fluid src={recipe.image_url} />
+
+        <Image src={recipe.image_url} fluid />
+
         <div className="card-container">
-          <h1>{recipe.name}</h1>
+          <h1 className="recipe-overview-title">
+            <LinesEllipsis
+              text={recipe.name}
+              maxLine="2"
+              ellipsis="..."
+              trimRight
+              basedOn="letters"
+            />
+          </h1>
           <Card.Meta>{recipe.description}</Card.Meta>
           <hr />
-          <Grid>
+          <Grid >
             <Grid.Row>
               <Grid.Column width={8}>
                 <span><Icon disabled className="clock outline" /></span> <span> {recipe.duration} minutes </span>

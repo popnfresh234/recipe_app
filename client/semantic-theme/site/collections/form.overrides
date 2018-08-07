@@ -5,3 +5,7 @@
 .ui.form input:not([type]):focus{
     background: #ffffe0;
 }
+
+.direction-text-area.ui.form textarea {
+     background: rgba(177,216,185,0.5)
+}

@@ -19,6 +19,7 @@ class RecipeDetails extends Component {
   componentDidMount() {
     axios.get( `/api/recipes/${this.props.match.params.id}` )
       .then( ( result ) => {
+        console.log( result.data );
         const ingredients = this.calcIngredients( result.data.ingredients, 1 );
 
         const directions = result.data.directions
@@ -60,15 +61,33 @@ class RecipeDetails extends Component {
 
 
   render() {
+    const rowStyle = {
+      paddingTop: 0,
+      paddingBottom: 0,
+    };
+
+    const columnStyle = {
+      paddingRight: '2rem',
+      paddingTop: '2rem',
+      paddingBottom: '2rem',
+    };
+
+    const leftColumnStyle = {
+      ...columnStyle,
+      paddingLeft: '2rem',
+    };
+
+
     return (
 
-      <Grid stackable columns="equal">
-        <Grid.Row>
-          <Grid.Column >
+      <Grid className="recipe-detail-grid" stackable columns="equal">
+        <Grid.Row >
+          <Grid.Column verticalAlign="middle" style={columnStyle} >
             <Image size="medium" centered src={this.state.recipe.image_url} />
           </Grid.Column>
-          <Grid.Column className="green-column">
-            <Header textAlign="center">{this.state.recipe.name}</Header>
+          <Grid.Column className="green-column" style={columnStyle}>
+            <Header textAlign="center" id="header-recipe-title">{this.state.recipe.name}</Header>
+            <Header textAlign="center" size="tiny" id="header-author">By {this.state.recipe.author}</Header>
             <Header>INGREDIENTS</Header>
             <Table unstackable compact>
               <Table.Body>
@@ -78,14 +97,17 @@ class RecipeDetails extends Component {
             </Table>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
-          <Grid.Column className="green-column" style={{ paddingLeft: '2em' }}>
+        <Grid.Row style={rowStyle}>
+          <Grid.Column className="green-column" style={leftColumnStyle}>
             <Header>DIRECTIONS</Header>
             <List ordered>
               {this.state.directions}
             </List>
           </Grid.Column>
-          <Grid.Column />
+          <Grid.Column style={columnStyle}>
+            <Header>Notes</Header>
+            {this.state.recipe.note}
+          </Grid.Column>
         </Grid.Row>
       </Grid>
 

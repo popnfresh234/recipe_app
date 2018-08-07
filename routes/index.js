@@ -6,7 +6,10 @@ const knexConfig = require( '../knexfile' );
 const knex = require( 'knex' )( knexConfig[ENV] );
 const verifyUser = require( './utils.js' );
 
+require( 'dotenv' ).config();
+
 const router = express.Router();
+
 
 //* ********************************************
 //* ** GET /api/:user_id/recipes ***

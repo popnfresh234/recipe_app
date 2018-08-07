@@ -10,10 +10,12 @@ exports.up = function ( knex, Promise ) {
     knex.schema.createTable( 'recipes', ( table ) => {
       table.increments( 'id' ).primary();
       table.string( 'name' ).notNull();
+      table.string( 'author' ).notNull();
       table.string( 'category' );
       table.string( 'description' );
       table.integer( 'duration' );
       table.string( 'image_url' );
+      table.string( 'note' );
       table.integer( 'user_id' ).references( 'id' ).inTable( 'users' ).onDelete( 'CASCADE' );
     } ),
 
