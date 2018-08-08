@@ -176,8 +176,10 @@ router.delete( '/:recipe_id', verifyUser, ( req, res, next ) => {
 //* ********************************************
 
 router.put( '/:recipe_id', verifyUser, ( req, res, next ) => {
-  const recipeBase = getBaseRecipe( req );
-  const { ingredients, directions } = req.body;
+  const recipe = JSON.parse( req.body.recipe );
+  const fileName = req.files ? req.files.file.name : '';
+  const { ingredients, directions } = recipe;
+  const recipeBase = getBaseRecipe( req, recipe, fileName );
   knex( 'recipes' )
     .where( 'id', req.params.recipe_id )
     .update( recipeBase )

@@ -1,5 +1,6 @@
 /* eslint class-methods-use-this: 0 */ // --> OFF
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Grid, Image, Header, Table, List } from 'semantic-ui-react';
 import axios from 'axios';
 import Ingredient from './Ingredient.jsx';
@@ -88,6 +89,7 @@ class RecipeDetails extends Component {
           <Grid.Column className="green-column" style={columnStyle}>
             <Header textAlign="center" id="header-recipe-title">{this.state.recipe.name}</Header>
             <Header textAlign="center" size="tiny" id="header-author">By {this.state.recipe.author}</Header>
+            <Header as={NavLink} to={`/edit-recipe/${this.props.match.params.id}`}>EDIT</Header>
             <Header>INGREDIENTS</Header>
             <Table unstackable compact>
               <Table.Body>

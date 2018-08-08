@@ -8,7 +8,7 @@ class ImageUpload extends Component {
   constructor( props ) {
     super( props );
     this.state = {
-      fileUrl: 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png',
+      fileUrl: this.props.imageUrl ? this.props.imageUrl : 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png',
     };
     this.handleChange = this.handleChange.bind( this );
     this.resize = this.resize.bind( this );

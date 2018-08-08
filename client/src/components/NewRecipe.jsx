@@ -33,6 +33,7 @@ class NewRecipe extends Component {
       error: '',
       submitted: false,
       image: '',
+      editing: false,
     };
 
     this.onIngredientChange = this.onIngredientChange.bind( this );
@@ -48,6 +49,18 @@ class NewRecipe extends Component {
     this.scrollToDirections = this.scrollToDirections.bind( this );
     this.scrollToIngredients = this.scrollToIngredients.bind( this );
     this.addImage = this.addImage.bind( this );
+  }
+
+  componentDidMount() {
+    if ( this.props.match.params.id ) {
+      axios.get( `/api/recipes/${this.props.match.params.id}` )
+        .then( ( result ) => {
+          this.setState( {
+            recipe: result.data,
+            editing: true,
+          } );
+        } );
+    }
   }
 
 
@@ -96,14 +109,23 @@ class NewRecipe extends Component {
       const formData = new FormData();
       formData.append( 'file', this.state.image );
       formData.append( 'recipe', JSON.stringify( this.state.recipe ) );
-      axios.post( '/api/recipes', formData )
-        .then( () => {
-          this.setState( {
-            submitted: true,
+      if ( this.state.editing ) {
+        axios.put( `/api/recipes/${this.props.match.params.id}`, formData )
+          .then( () => {
+            this.setState( {
+              submitted: true,
+            } );
           } );
-        } ).catch( ( err ) => {
-          console.log( err );
-        } );
+      } else {
+        axios.post( '/api/recipes', formData )
+          .then( () => {
+            this.setState( {
+              submitted: true,
+            } );
+          } ).catch( ( err ) => {
+            console.log( err );
+          } );
+      }
     }
   }
 
