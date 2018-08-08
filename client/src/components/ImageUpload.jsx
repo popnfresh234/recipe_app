@@ -8,11 +8,17 @@ class ImageUpload extends Component {
   constructor( props ) {
     super( props );
     this.state = {
-      fileUrl: this.props.imageUrl ? this.props.imageUrl : 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png',
+      fileUrl: 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png',
     };
     this.handleChange = this.handleChange.bind( this );
     this.resize = this.resize.bind( this );
     this.resizeImage = this.resizeImage.bind( this );
+  }
+
+  componentWillReceiveProps( nextProps ) {
+    this.setState( {
+      fileUrl: nextProps.imageUrl,
+    } );
   }
 
   handleChange( e ) {
@@ -29,7 +35,7 @@ class ImageUpload extends Component {
       }
       const blob = new Blob( [new Uint8Array( array )], { type: `image/${ext}` } );
       const file = new File( [blob], `${uuidv4()}.${ext}`, { type: blob.type } );
-      this.props.addImage( file );
+      this.props.addImage( file, this.state.fileUrl );
     } );
   }
 

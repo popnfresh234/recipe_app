@@ -34,6 +34,7 @@ class NewRecipe extends Component {
       submitted: false,
       image: '',
       editing: false,
+      imageUrl: '',
     };
 
     this.onIngredientChange = this.onIngredientChange.bind( this );
@@ -57,6 +58,7 @@ class NewRecipe extends Component {
         .then( ( result ) => {
           this.setState( {
             recipe: result.data,
+            imageUrl: result.data.image_url,
             editing: true,
           } );
         } );
@@ -82,7 +84,6 @@ class NewRecipe extends Component {
   }
 
   onDirectionChange( e ) {
-    console.log( 'change' );
     const { currentDirection } = this.state;
     currentDirection[e.target.name] = e.target.value;
     this.setState( {
@@ -156,9 +157,11 @@ class NewRecipe extends Component {
     return false;
   }
 
-  addImage( image ) {
+  addImage( image, imageUrl ) {
+    console.log( image );
     this.setState( {
       image,
+      imageUrl,
     } );
   }
 
@@ -354,7 +357,7 @@ class NewRecipe extends Component {
 
           </Grid.Column>
           <Grid.Column textAlign="center">
-            <ImageUpload addImage={this.addImage} />
+            <ImageUpload addImage={this.addImage} editing={this.state.editing} imageUrl={this.state.imageUrl} />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
