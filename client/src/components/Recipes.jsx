@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Container } from 'semantic-ui-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
+import { Card, Container, Grid, Header } from 'semantic-ui-react';
 import axios from 'axios';
 import RecipeOverview from './RecipeOverview.jsx';
 
@@ -39,9 +41,18 @@ class Recipes extends Component {
   render() {
     return (
       <div>
-        {this.state.recipes.length === 0 && <p>No Recipes yet!</p>}
         <Container>
           <Card.Group stackable itemsPerRow={4}>
+            <Card as={NavLink} exact to="/new-recipe">
+              <Grid className="new-recipe-grid" verticalAlign="middle" celled>
+                <Grid.Row stretched>
+                  <Grid.Column textAlign="center">
+                    <FontAwesomeIcon className="recipes-new-recipe-add-icon" icon="plus-circle" color="#b1d8b9" size="4x" />
+                    <Header>New Recipe</Header>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Card>
             {this.state.recipes}
           </Card.Group>
         </Container>
