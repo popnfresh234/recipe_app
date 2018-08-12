@@ -5,7 +5,7 @@ import { Menu } from 'semantic-ui-react';
 class Home extends Component {
   render() {
     return (
-      <Menu.Item as={NavLink} exact to="/new-recipe">Home Page </Menu.Item>
+      <p>Home Page</p>
     );
   }
 }

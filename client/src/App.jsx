@@ -101,6 +101,18 @@ class App extends Component {
                     /> )}
           />
           <Route
+            path="/edit-recipe/:id"
+            exact
+            render={props =>
+                    ( <NewRecipe
+                      {...props}
+                      rootPath="new-recipe"
+                      userId={this.state.userId}
+                      userName={this.state.userName}
+                      key="new-recipe"
+                    /> )}
+          />
+          <Route
             path="/login"
             exact
             render={props =>

@@ -33,6 +33,8 @@ class NewRecipe extends Component {
       error: '',
       submitted: false,
       image: '',
+      editing: false,
+      imageUrl: '',
     };
 
     this.onIngredientChange = this.onIngredientChange.bind( this );
@@ -48,6 +50,19 @@ class NewRecipe extends Component {
     this.scrollToDirections = this.scrollToDirections.bind( this );
     this.scrollToIngredients = this.scrollToIngredients.bind( this );
     this.addImage = this.addImage.bind( this );
+  }
+
+  componentDidMount() {
+    if ( this.props.match.params.id ) {
+      axios.get( `/api/recipes/${this.props.match.params.id}` )
+        .then( ( result ) => {
+          this.setState( {
+            recipe: result.data,
+            imageUrl: result.data.image_url,
+            editing: true,
+          } );
+        } );
+    }
   }
 
 
@@ -69,7 +84,6 @@ class NewRecipe extends Component {
   }
 
   onDirectionChange( e ) {
-    console.log( 'change' );
     const { currentDirection } = this.state;
     currentDirection[e.target.name] = e.target.value;
     this.setState( {
@@ -96,14 +110,23 @@ class NewRecipe extends Component {
       const formData = new FormData();
       formData.append( 'file', this.state.image );
       formData.append( 'recipe', JSON.stringify( this.state.recipe ) );
-      axios.post( '/api/recipes', formData )
-        .then( () => {
-          this.setState( {
-            submitted: true,
+      if ( this.state.editing ) {
+        axios.put( `/api/recipes/${this.props.match.params.id}`, formData )
+          .then( () => {
+            this.setState( {
+              submitted: true,
+            } );
           } );
-        } ).catch( ( err ) => {
-          console.log( err );
-        } );
+      } else {
+        axios.post( '/api/recipes', formData )
+          .then( () => {
+            this.setState( {
+              submitted: true,
+            } );
+          } ).catch( ( err ) => {
+            console.log( err );
+          } );
+      }
     }
   }
 
@@ -134,9 +157,11 @@ class NewRecipe extends Component {
     return false;
   }
 
-  addImage( image ) {
+  addImage( image, imageUrl ) {
+    console.log( image );
     this.setState( {
       image,
+      imageUrl,
     } );
   }
 
@@ -332,7 +357,7 @@ class NewRecipe extends Component {
 
           </Grid.Column>
           <Grid.Column textAlign="center">
-            <ImageUpload addImage={this.addImage} />
+            <ImageUpload addImage={this.addImage} editing={this.state.editing} imageUrl={this.state.imageUrl} />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

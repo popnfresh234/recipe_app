@@ -15,6 +15,12 @@ class ImageUpload extends Component {
     this.resizeImage = this.resizeImage.bind( this );
   }
 
+  componentWillReceiveProps( nextProps ) {
+    this.setState( {
+      fileUrl: nextProps.imageUrl,
+    } );
+  }
+
   handleChange( e ) {
     const file = e.target.files[0];
     const ext = file.name.replace( /^.*\./, '' );
@@ -29,7 +35,7 @@ class ImageUpload extends Component {
       }
       const blob = new Blob( [new Uint8Array( array )], { type: `image/${ext}` } );
       const file = new File( [blob], `${uuidv4()}.${ext}`, { type: blob.type } );
-      this.props.addImage( file );
+      this.props.addImage( file, this.state.fileUrl );
     } );
   }
 
