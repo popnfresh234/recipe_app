@@ -3,8 +3,16 @@
     min-height: 47vh;
 }
 
+.recipe-detail-edit-button-container{
+    float: right;
+    height: 0;
+}
+
 #header-recipe-title{
     margin-bottom: 0;
+    float: left; 
+    text-align: center; 
+    width: 100%;
 }
 
 #header-author{

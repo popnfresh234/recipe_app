@@ -24,7 +24,7 @@ class App extends Component {
 
   componentWillMount() {
     const isLoggedIn = JSON.parse( localStorage.getItem( 'isLoggedIn' ) );
-    const userId = localStorage.getItem( 'userId' );
+    const userId = JSON.parse( localStorage.getItem( 'userId' ) );
     const userName = localStorage.getItem( 'userName' );
     this.setState( {
       isLoggedIn,
@@ -36,7 +36,7 @@ class App extends Component {
   handleAuthState( isLoggedIn, userId, userName ) {
     this.setState( { isLoggedIn, userId, userName } );
     localStorage.setItem( 'isLoggedIn', JSON.stringify( isLoggedIn ) );
-    localStorage.setItem( 'userId', userId );
+    localStorage.setItem( 'userId', JSON.stringify( userId ) );
     localStorage.setItem( 'userName', userName );
   }
 
