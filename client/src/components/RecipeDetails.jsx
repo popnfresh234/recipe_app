@@ -1,7 +1,7 @@
 /* eslint class-methods-use-this: 0 */ // --> OFF
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Grid, Image, Header, Table, List } from 'semantic-ui-react';
+import { Grid, Image, Header, Table, List, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import Ingredient from './Ingredient.jsx';
 import Direction from './Direction.jsx';
@@ -20,7 +20,6 @@ class RecipeDetails extends Component {
   componentDidMount() {
     axios.get( `/api/recipes/${this.props.match.params.id}` )
       .then( ( result ) => {
-        console.log( result.data );
         const ingredients = this.calcIngredients( result.data.ingredients, 1 );
 
         const directions = result.data.directions
@@ -62,6 +61,10 @@ class RecipeDetails extends Component {
 
 
   render() {
+    console.log( 'User ID:', this.props.userId );
+    console.log( typeof this.props.userId );
+    console.log( this.state.recipe.user_id );
+    console.log( typeof this.state.recipe.user_id );
     const rowStyle = {
       paddingTop: 0,
       paddingBottom: 0,
@@ -87,9 +90,13 @@ class RecipeDetails extends Component {
             <Image size="medium" centered src={this.state.recipe.image_url} />
           </Grid.Column>
           <Grid.Column className="green-column" style={columnStyle}>
-            <Header textAlign="center" id="header-recipe-title">{this.state.recipe.name}</Header>
+            {this.state.recipe.user_id === this.props.userId &&
+            <span className="recipe-detail-edit-button-container">
+              <Button as={NavLink} to={`/edit-recipe/${this.props.match.params.id}`}>EDIT</Button>
+            </span>
+            }
+            <Header id="header-recipe-title">{this.state.recipe.name}</Header>
             <Header textAlign="center" size="tiny" id="header-author">By {this.state.recipe.author}</Header>
-            <Header as={NavLink} to={`/edit-recipe/${this.props.match.params.id}`}>EDIT</Header>
             <Header>INGREDIENTS</Header>
             <Table unstackable compact>
               <Table.Body>
