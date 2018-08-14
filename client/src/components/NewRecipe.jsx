@@ -18,7 +18,7 @@ class NewRecipe extends Component {
         author: this.props.userName,
         category: '',
         description: '',
-        image_url: '',
+        image_url: 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png',
         duration: '',
         note: '',
         ingredients: [],
@@ -158,7 +158,6 @@ class NewRecipe extends Component {
   }
 
   addImage( image, imageUrl ) {
-    console.log( image );
     this.setState( {
       image,
       imageUrl,
