@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Divider } from 'semantic-ui-react';
 import Navbar from './components/Navbar.jsx';
-import Home from './components/Home.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 import Recipes from './components/Recipes.jsx';
 import Login from './components/Login.jsx';
 import Register from './components/Register.jsx';
@@ -47,75 +47,64 @@ class App extends Component {
         <div style={{ height: '0.5rem', borderTop: '1px solid #b1d8b9', borderBottom: '1px solid #b1d8b9' }} />
         <Divider hidden />
         <Switch>
-          <Route
+          <PrivateRoute
             path="/"
             exact
-            render={props =>
-                    ( <Recipes
-                      {...props}
-                      rootPath="random"
-                      userId={this.state.userId}
-                      cardsPerRow={3}
-                      key="random"
-                    /> )}
+            isLoggedIn={this.state.isLoggedIn}
+            rootPath="random"
+            key="random"
+            cardsPerRow={3}
+            userId={this.state.userId}
+            component={Recipes}
           />
-          <Route
+          <PrivateRoute
             path="/recipes"
             exact
-            render={props =>
-                    ( <Recipes
-                      {...props}
-                      rootPath="recipes"
-                      cardsPerRow={4}
-                      key="recipes"
-                    /> )}
+            isLoggedIn={this.state.isLoggedIn}
+            rootPath="recipes"
+            key="recipes"
+            cardsPerRow={4}
+            component={Recipes}
           />
-          <Route
+          <PrivateRoute
             path="/myrecipes"
             exact
-            render={props =>
-                    ( <Recipes
-                      {...props}
-                      rootPath="myrecipes"
-                      userId={this.state.userId}
-                      cardsPerRow={4}
-                      key="myrecipes"
-                    /> )}
+            isLoggedIn={this.state.isLoggedIn}
+            rootPath="myrecipes"
+            userId={this.state.userId}
+            cardsPerRow={4}
+            key="myrecipes"
+            component={Recipes}
           />
-          <Route
+          <PrivateRoute
             path="/recipe-details/:id"
             exact
-            render={props =>
-                    ( <RecipeDetails
-                      {...props}
-                      rootPath="recipe-details"
-                      userId={this.state.userId}
-                      key="recipe-details"
-                    /> )}
+            isLoggedIn={this.state.isLoggedIn}
+            rootPath="recipe-details"
+            userId={this.state.userId}
+            key="recipe-details"
+            component={RecipeDetails}
           />
-          <Route
+          <PrivateRoute
             path="/new-recipe"
             exact
-            render={props =>
-                    ( <NewRecipe
-                      {...props}
-                      rootPath="new-recipe"
-                      userId={this.state.userId}
-                      userName={this.state.userName}
-                      key="new-recipe"
-                    /> )}
+            isLoggedIn={this.state.isLoggedIn}
+            rootPath="new-recipe"
+            userId={this.state.userId}
+            userName={this.state.userName}
+            key="new-recipe"
+            component={NewRecipe}
           />
-          <Route
+          <PrivateRoute
             path="/edit-recipe/:id"
             exact
-            render={props =>
-                    ( <NewRecipe
-                      {...props}
-                      rootPath="new-recipe"
-                      userId={this.state.userId}
-                      userName={this.state.userName}
-                      key="new-recipe"
-                    /> )}
+            isLoggedIn={this.state.isLoggedIn}
+            rootPath="new-recipe"
+            userId={this.state.userId}
+            userName={this.state.userName}
+            key="new-recipe"
+
+            component={NewRecipe}
           />
           <Route
             path="/login"
