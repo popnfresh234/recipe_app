@@ -34,9 +34,10 @@ function getDirectionsForDb( directions, recipeId ) {
 }
 
 function getBaseRecipe( req, recipe, fileName ) {
+  console.log( recipe );
   const image_url = fileName
     ? `https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/${fileName}`
-    : 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png';
+    : recipe.image_url;
   return {
     name: recipe.name,
     author: recipe.author,

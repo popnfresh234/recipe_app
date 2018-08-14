@@ -5,7 +5,6 @@ import { Redirect } from 'react-router-dom';
 class PrivateRoute extends Component {
   render() {
     const { component: Component, isLoggedIn, ...rest } = this.props;
-    console.log( this.props );
     return (
       ( isLoggedIn ) ? <Component {...rest} /> : <Redirect to="/login" /> );
   }

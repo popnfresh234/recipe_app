@@ -34,8 +34,8 @@ class ImageUpload extends Component {
         array.push( binary.charCodeAt( i ) );
       }
       const blob = new Blob( [new Uint8Array( array )], { type: `image/${ext}` } );
-      const file = new File( [blob], `${uuidv4()}.${ext}`, { type: blob.type } );
-      this.props.addImage( file, this.state.fileUrl );
+      const newFile = new File( [blob], `${uuidv4()}.${ext}`, { type: blob.type } );
+      this.props.addImage( newFile, this.state.fileUrl );
     } );
   }
 
