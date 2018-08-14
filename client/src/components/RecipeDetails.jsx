@@ -18,7 +18,7 @@ class RecipeDetails extends Component {
 
 
   componentDidMount() {
-    axios.get( `/api/recipes/${this.props.match.params.id}` )
+    axios.get( `/api/recipes/${this.props.computedMatch.params.id}` )
       .then( ( result ) => {
         const ingredients = this.calcIngredients( result.data.ingredients, 1 );
 
@@ -61,10 +61,6 @@ class RecipeDetails extends Component {
 
 
   render() {
-    console.log( 'User ID:', this.props.userId );
-    console.log( typeof this.props.userId );
-    console.log( this.state.recipe.user_id );
-    console.log( typeof this.state.recipe.user_id );
     const rowStyle = {
       paddingTop: 0,
       paddingBottom: 0,
@@ -92,7 +88,7 @@ class RecipeDetails extends Component {
           <Grid.Column className="green-column" style={columnStyle}>
             {this.state.recipe.user_id === this.props.userId &&
             <span className="recipe-detail-edit-button-container">
-              <Button as={NavLink} to={`/edit-recipe/${this.props.match.params.id}`}>EDIT</Button>
+              <Button as={NavLink} to={`/edit-recipe/${this.props.computedMatch.params.id}`}>EDIT</Button>
             </span>
             }
             <Header id="header-recipe-title">{this.state.recipe.name}</Header>

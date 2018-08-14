@@ -53,8 +53,8 @@ class NewRecipe extends Component {
   }
 
   componentDidMount() {
-    if ( this.props.match.params.id ) {
-      axios.get( `/api/recipes/${this.props.match.params.id}` )
+    if ( this.props.computedMatch.params.id ) {
+      axios.get( `/api/recipes/${this.props.computedMatch.params.id}` )
         .then( ( result ) => {
           this.setState( {
             recipe: result.data,
@@ -111,7 +111,7 @@ class NewRecipe extends Component {
       formData.append( 'file', this.state.image );
       formData.append( 'recipe', JSON.stringify( this.state.recipe ) );
       if ( this.state.editing ) {
-        axios.put( `/api/recipes/${this.props.match.params.id}`, formData )
+        axios.put( `/api/recipes/${this.props.computedMatch.params.id}`, formData )
           .then( () => {
             this.setState( {
               submitted: true,
