@@ -55,6 +55,7 @@ class App extends Component {
                       {...props}
                       rootPath="random"
                       userId={this.state.userId}
+                      cardsPerRow={3}
                       key="random"
                     /> )}
           />
@@ -65,6 +66,7 @@ class App extends Component {
                     ( <Recipes
                       {...props}
                       rootPath="recipes"
+                      cardsPerRow={4}
                       key="recipes"
                     /> )}
           />
@@ -76,6 +78,7 @@ class App extends Component {
                       {...props}
                       rootPath="myrecipes"
                       userId={this.state.userId}
+                      cardsPerRow={4}
                       key="myrecipes"
                     /> )}
           />

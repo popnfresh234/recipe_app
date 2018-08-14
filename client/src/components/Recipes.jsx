@@ -54,7 +54,7 @@ class Recipes extends Component {
       <div>
         <Header textAlign="center">{title}</Header>
         <Container>
-          <Card.Group stackable itemsPerRow={4}>
+          <Card.Group stackable itemsPerRow={this.props.cardsPerRow}>
             { title !== 'Random Ideas' &&
             <Card as={NavLink} exact to="/new-recipe">
               <Grid className="new-recipe-grid" verticalAlign="middle" celled>
