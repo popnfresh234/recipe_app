@@ -146,6 +146,28 @@ router.get( '/', verifyUser, ( req, res, next ) => {
 } );
 
 //* ********************************************
+//* ** GET /api/recipes/random' ***
+//* ** Get all recipes
+//* ********************************************
+
+router.get( '/random', verifyUser, ( req, res, next ) => {
+  knex.select()
+    .from( 'recipes' )
+    .orderByRaw( 'RANDOM()' )
+    .limit( 3 )
+    .then( ( results ) => {
+      if ( results.length ) {
+        res.status( 200 ).json( results );
+      } else {
+        res.status( 204 ).send( 'No results' );
+      }
+    } )
+    .catch( ( err ) => {
+      res.status( 400 ).send( 'Bad Request' );
+    } );
+} );
+
+//* ********************************************
 //* ** GET /api/recipes/:recipe_id' ***
 //* ** Get a specific recipe
 //* ********************************************
