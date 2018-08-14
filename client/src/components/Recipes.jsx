@@ -21,6 +21,7 @@ class Recipes extends Component {
       random: () => '/api/recipes/random',
     };
 
+
     const fn = pageMap[this.props.rootPath];
     if ( fn ) {
       axios.get( fn() )
@@ -39,10 +40,22 @@ class Recipes extends Component {
 
 
   render() {
+    let title = '';
+    const titleMap = {
+      recipes: () => 'All Recipes',
+      myrecipes: () => 'My Recipes',
+      random: () => 'Random Ideas',
+    };
+    const titleFn = titleMap[this.props.rootPath];
+    if ( titleFn ) {
+      title = titleFn();
+    }
     return (
       <div>
+        <Header textAlign="center">{title}</Header>
         <Container>
           <Card.Group stackable itemsPerRow={4}>
+            { title !== 'Random Ideas' &&
             <Card as={NavLink} exact to="/new-recipe">
               <Grid className="new-recipe-grid" verticalAlign="middle" celled>
                 <Grid.Row stretched>
@@ -53,6 +66,7 @@ class Recipes extends Component {
                 </Grid.Row>
               </Grid>
             </Card>
+          }
             {this.state.recipes}
           </Card.Group>
         </Container>

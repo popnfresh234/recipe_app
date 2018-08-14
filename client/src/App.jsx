@@ -44,16 +44,18 @@ class App extends Component {
     return (
       <div>
         <Navbar isLoggedIn={this.state.isLoggedIn} handleAuthState={this.handleAuthState} />
+        <div style={{ height: '0.5rem', borderTop: '1px solid #b1d8b9', borderBottom: '1px solid #b1d8b9' }} />
         <Divider hidden />
         <Switch>
           <Route
             path="/"
             exact
             render={props =>
-                    ( <Home
+                    ( <Recipes
                       {...props}
-                      rootPath="home"
-                      key="home"
+                      rootPath="random"
+                      userId={this.state.userId}
+                      key="random"
                     /> )}
           />
           <Route

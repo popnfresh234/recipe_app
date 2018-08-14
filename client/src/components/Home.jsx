@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 
 class Home extends Component {
   render() {
     return (
-      <p>Home Page</p>
+      <div>
+        <Header textAlign="center">Random Ideas</Header>
+      </div>
     );
   }
 }
