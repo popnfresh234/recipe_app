@@ -4,3 +4,11 @@
   font-family: "Roboto", Arial, Sans-serif !important;
   font-weight: 400 !important;
 }
+
+.delete-modal.ui.modal > .header {
+  background: #ffffe0;
+}
+
+.delete-modal.ui.modal > .actions{
+  background: #ffffe0;
+}

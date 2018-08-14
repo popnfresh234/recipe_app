@@ -1,10 +1,11 @@
 /* eslint class-methods-use-this: 0 */ // --> OFF
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { Grid, Image, Header, Table, List, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import Ingredient from './Ingredient.jsx';
 import Direction from './Direction.jsx';
+import DeleteModal from './DeleteModal.jsx';
 
 
 class RecipeDetails extends Component {
@@ -12,8 +13,10 @@ class RecipeDetails extends Component {
     super( props );
     this.state = {
       recipe: '',
+      deleted: false,
     };
     this.onQuantityChange = this.onQuantityChange.bind( this );
+    this.onDelete = this.onDelete.bind( this );
   }
 
 
@@ -45,6 +48,15 @@ class RecipeDetails extends Component {
     }
     const ingredients = this.calcIngredients( this.state.rawIngredients, multiplier );
     this.setState( { ingredients } );
+  }
+
+  onDelete() {
+    axios.delete( `/api/recipes/${this.props.computedMatch.params.id}` )
+      .then( () => {
+        this.setState( {
+          deleted: true,
+        } );
+      } );
   }
 
   calcIngredients( ingredients, multiplier ) {
@@ -81,6 +93,7 @@ class RecipeDetails extends Component {
     return (
 
       <Grid className="recipe-detail-grid" stackable columns="equal">
+        {this.state.deleted && <Redirect to="/recipes" />}
         <Grid.Row >
           <Grid.Column verticalAlign="middle" style={columnStyle} >
             <Image size="medium" centered src={this.state.recipe.image_url} />
@@ -89,6 +102,7 @@ class RecipeDetails extends Component {
             {this.state.recipe.user_id === this.props.userId &&
             <span className="recipe-detail-edit-button-container">
               <Button as={NavLink} to={`/edit-recipe/${this.props.computedMatch.params.id}`}>EDIT</Button>
+              <DeleteModal onDelete={this.onDelete} />
             </span>
             }
             <Header id="header-recipe-title">{this.state.recipe.name}</Header>
