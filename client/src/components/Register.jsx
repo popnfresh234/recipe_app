@@ -26,11 +26,14 @@ class Register extends Component {
     if ( this.state.password !== this.state.confirmPassword ) {
       this.setState( { error: 'Your passwords don\'t match, please try again.' } );
     } else {
+      this.props.handleLoading();
       axios.post( '/api/register', this.state )
         .then( ( registerResponse ) => {
+          this.props.handleLoading();
           this.props.handleAuthState( true, registerResponse.data.id, registerResponse.data.name );
           this.props.history.push( '/recipes' );
         } ).catch( ( err ) => {
+          this.props.handleLoading();
           console.log( err.response );
           this.setState( {
             error: err.response.data,

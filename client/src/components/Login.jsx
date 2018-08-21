@@ -23,12 +23,15 @@ class Login extends Component {
 
   onSubmit( e ) {
     e.preventDefault();
+    this.props.handleLoading();
     axios.post( '/api/login', this.state )
       .then( ( loginResponse ) => {
+        this.props.handleLoading();
         this.props.handleAuthState( true, loginResponse.data.id, loginResponse.data.name );
         this.props.history.push( '/recipes' );
       } ).catch( ( err ) => {
         console.log( err.message );
+        this.props.handleLoading();
         this.setState( { error: 'Credentials incorrect' } );
       } );
   }

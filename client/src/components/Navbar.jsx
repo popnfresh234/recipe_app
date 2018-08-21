@@ -12,11 +12,14 @@ class Navbar extends Component {
   }
 
   handleLogout() {
+    this.props.handleLoading();
     axios.post( '/api/logout' )
       .then( ( ) => {
+        this.props.handleLoading();
         this.props.handleAuthState( false, null, null );
         this.props.history.push( '/' );
       } ).catch( ( err ) => {
+        this.props.handleLoading();
         console.log( err );
       } );
   }

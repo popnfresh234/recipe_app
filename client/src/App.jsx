@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Divider } from 'semantic-ui-react';
+import { Divider, Dimmer, Loader } from 'semantic-ui-react';
 import Navbar from './components/Navbar.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Recipes from './components/Recipes.jsx';
@@ -17,8 +17,10 @@ class App extends Component {
       isLoggedIn: '',
       userId: '',
       userName: '',
+      loading: false,
     };
     this.handleAuthState = this.handleAuthState.bind( this );
+    this.handleLoading = this.handleLoading.bind( this );
   }
 
 
@@ -40,10 +42,25 @@ class App extends Component {
     localStorage.setItem( 'userName', userName );
   }
 
+  handleLoading() {
+    if ( this.state.loading === true ) {
+      this.setState( { loading: false } );
+    } else {
+      this.setState( { loading: true } );
+    }
+  }
+
   render() {
     return (
       <div>
-        <Navbar isLoggedIn={this.state.isLoggedIn} handleAuthState={this.handleAuthState} />
+        <Dimmer active={this.state.loading} page>
+          <Loader size="massive" />
+        </Dimmer>
+        <Navbar
+          isLoggedIn={this.state.isLoggedIn}
+          handleAuthState={this.handleAuthState}
+          handleLoading={this.handleLoading}
+        />
         <div style={{ height: '0.5rem', borderTop: '1px solid #b1d8b9', borderBottom: '1px solid #b1d8b9' }} />
         <Divider hidden />
         <Switch>
@@ -64,6 +81,7 @@ class App extends Component {
             rootPath="recipes"
             key="recipes"
             cardsPerRow={4}
+            handleLoading={this.handleLoading}
             component={Recipes}
           />
           <PrivateRoute
@@ -71,9 +89,10 @@ class App extends Component {
             exact
             isLoggedIn={this.state.isLoggedIn}
             rootPath="myrecipes"
+            key="myrecipes"
             userId={this.state.userId}
             cardsPerRow={4}
-            key="myrecipes"
+            handleLoading={this.handleLoading}
             component={Recipes}
           />
           <PrivateRoute
@@ -83,6 +102,7 @@ class App extends Component {
             rootPath="recipe-details"
             userId={this.state.userId}
             key="recipe-details"
+            handleLoading={this.handleLoading}
             component={RecipeDetails}
           />
           <PrivateRoute
@@ -90,9 +110,10 @@ class App extends Component {
             exact
             isLoggedIn={this.state.isLoggedIn}
             rootPath="new-recipe"
+            key="new-recipe"
             userId={this.state.userId}
             userName={this.state.userName}
-            key="new-recipe"
+            handleLoading={this.handleLoading}
             component={NewRecipe}
           />
           <PrivateRoute
@@ -100,10 +121,10 @@ class App extends Component {
             exact
             isLoggedIn={this.state.isLoggedIn}
             rootPath="new-recipe"
+            key="new-recipe"
             userId={this.state.userId}
             userName={this.state.userName}
-            key="new-recipe"
-
+            handleLoading={this.handleLoading}
             component={NewRecipe}
           />
           <Route
@@ -113,6 +134,7 @@ class App extends Component {
                     ( <Login
                       {...props}
                       handleAuthState={this.handleAuthState}
+                      handleLoading={this.handleLoading}
                       rootPath="signin"
                       key="signin"
                     /> )}
@@ -125,6 +147,7 @@ class App extends Component {
                     ( <Register
                       {...props}
                       handleAuthState={this.handleAuthState}
+                      handleLoading={this.handleLoading}
                       rootPath="register"
                       key="register"
                     /> )}
