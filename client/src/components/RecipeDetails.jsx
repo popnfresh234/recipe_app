@@ -21,8 +21,10 @@ class RecipeDetails extends Component {
 
 
   componentDidMount() {
+    this.props.handleLoading();
     axios.get( `/api/recipes/${this.props.computedMatch.params.id}` )
       .then( ( result ) => {
+        this.props.handleLoading();
         const ingredients = this.calcIngredients( result.data.ingredients, 1 );
 
         const directions = result.data.directions
@@ -37,6 +39,7 @@ class RecipeDetails extends Component {
           directions,
         } );
       } ).catch( ( err ) => {
+        this.props.handleLoading();
         console.log( err );
       } );
   }
@@ -51,11 +54,16 @@ class RecipeDetails extends Component {
   }
 
   onDelete() {
+    this.props.handleLoading();
     axios.delete( `/api/recipes/${this.props.computedMatch.params.id}` )
       .then( () => {
+        this.props.handleLoading();
         this.setState( {
           deleted: true,
         } );
+      } ).catch( ( err ) => {
+        this.props.handleLoading();
+        console.log( err );
       } );
   }
 

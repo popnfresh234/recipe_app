@@ -54,13 +54,18 @@ class NewRecipe extends Component {
 
   componentDidMount() {
     if ( this.props.computedMatch.params.id ) {
+      this.props.handleLoading();
       axios.get( `/api/recipes/${this.props.computedMatch.params.id}` )
         .then( ( result ) => {
+          this.props.handleLoading();
           this.setState( {
             recipe: result.data,
             imageUrl: result.data.image_url,
             editing: true,
           } );
+        } ).catch( ( err ) => {
+          console.log( err );
+          this.props.handleLoading();
         } );
     }
   }
@@ -104,6 +109,7 @@ class NewRecipe extends Component {
   onSubmitRecipe() {
     const valid = this.validateRecipe();
     if ( valid ) {
+      this.props.handleLoading();
       this.setState( {
         error: '',
       } );
@@ -113,17 +119,23 @@ class NewRecipe extends Component {
       if ( this.state.editing ) {
         axios.put( `/api/recipes/${this.props.computedMatch.params.id}`, formData )
           .then( () => {
-            this.setState( {
-              submitted: true,
-            } );
-          } );
-      } else {
-        axios.post( '/api/recipes', formData )
-          .then( () => {
+            this.props.handleLoading();
             this.setState( {
               submitted: true,
             } );
           } ).catch( ( err ) => {
+            this.props.handleLoading();
+            console.log( err );
+          } );
+      } else {
+        axios.post( '/api/recipes', formData )
+          .then( () => {
+            this.props.handleLoading();
+            this.setState( {
+              submitted: true,
+            } );
+          } ).catch( ( err ) => {
+            this.props.handleLoading();
             console.log( err );
           } );
       }
