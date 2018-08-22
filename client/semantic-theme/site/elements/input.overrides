@@ -7,7 +7,7 @@
 }
 
 .new-recipe-quantity-input.ui.input input {
-    width: 4rem;
+    width: 6rem;
 }
 
 .new-recipe-units-input.ui.input input {
@@ -15,7 +15,7 @@
 }
 
 .new-recipe-added-quantity-input.ui.input input {
-    width: 4rem;
+    width: 6rem;
     background-color: rgba(177,216,185,0.5);
 }
 
