@@ -3,26 +3,26 @@ exports.up = function ( knex, Promise ) {
   return Promise.all( [
     knex.schema.createTable( 'users', ( table ) => {
       table.increments( 'id' ).primary();
-      table.string( 'name' ).notNull();
-      table.string( 'email' ).notNull();
-      table.string( 'password' ).notNull();
+      table.string( 'name', 10000 ).notNull();
+      table.string( 'email', 10000 ).notNull();
+      table.string( 'password', 10000 ).notNull();
     } ),
     knex.schema.createTable( 'recipes', ( table ) => {
       table.increments( 'id' ).primary();
-      table.string( 'name' ).notNull();
-      table.string( 'author' ).notNull();
-      table.string( 'category' );
-      table.string( 'description' );
+      table.string( 'name', 10000 ).notNull();
+      table.string( 'author', 10000 ).notNull();
+      table.string( 'category', 10000 );
+      table.string( 'description', 10000 );
       table.integer( 'duration' );
-      table.string( 'image_url' );
-      table.string( 'note' );
+      table.string( 'image_url', 10000 );
+      table.string( 'note', 10000 );
       table.integer( 'user_id' ).references( 'id' ).inTable( 'users' ).onDelete( 'CASCADE' );
     } ),
 
     knex.schema.createTable( 'ingredients', ( table ) => {
       table.increments( 'id' ).primary();
-      table.string( 'name' ).notNull();
-      table.string( 'units' ).notNull();
+      table.string( 'name', 10000 ).notNull();
+      table.string( 'units', 10000 ).notNull();
       table.float( 'quantity' ).notNull();
       table.integer( 'recipe_id' ).references( 'id' ).inTable( 'recipes' ).onDelete( 'CASCADE' );
       table.integer( 'user_id' ).references( 'id' ).inTable( 'users' ).onDelete( 'CASCADE' );
