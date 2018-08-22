@@ -34,7 +34,7 @@ class NewRecipe extends Component {
       submitted: false,
       image: '',
       editing: false,
-      imageUrl: '',
+      imageUrl: 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/place-holder.png',
     };
 
     this.onIngredientChange = this.onIngredientChange.bind( this );
