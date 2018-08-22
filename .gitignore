@@ -73,5 +73,4 @@ typings/
 .serverless
 
 #builds
-/public
 /client/dist
