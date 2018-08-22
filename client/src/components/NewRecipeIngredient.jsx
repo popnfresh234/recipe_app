@@ -30,7 +30,7 @@ class NewRecipeIngredient extends Component {
   render() {
     return (
       <Table.Row>
-        <Table.Cell collapsing ><Input className="new-recipe-added-quantity-input" name="quantity" value={this.state.quantity} onChange={this.onUpdateIngredient} /></Table.Cell>
+        <Table.Cell collapsing ><Input className="new-recipe-added-quantity-input" name="quantity" type="number" value={this.state.quantity} onChange={this.onUpdateIngredient} /></Table.Cell>
         <Table.Cell collapsing ><Input className="new-recipe-added-units-input" name="units" value={this.state.units} onChange={this.onUpdateIngredient} /></Table.Cell>
         <Table.Cell><Input className="new-recipe-added-name-input" name="name" fluid value={this.state.name} onChange={this.onUpdateIngredient} /></Table.Cell>
       </Table.Row>

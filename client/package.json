@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Simple and lightweight Boilerplate for ReactJS projects",
   "scripts": {
-    "build": "webpack && rsync -auv dist/ ./build",
+    "build": "webpack && rsync -auv dist/ ../public/",
     "lint": "eslint --ext .jsx,.js src --fix",
     "start": "node server.js"
   },
@@ -54,7 +54,6 @@
     "rimraf": "^2.6.2",
     "sass-loader": "6.0.0",
     "semantic-ui-less": "2.2.14",
-    "sockjs-client": "^1.1.2",
     "style-loader": "^0.19.1",
     "url-loader": "^0.6.2",
     "webpack": "^3.11.0",
