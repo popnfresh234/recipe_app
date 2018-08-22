@@ -1,4 +1,4 @@
-require('dotenv').config();
+require( 'dotenv' ).config();
 
 module.exports = {
 
@@ -29,6 +29,7 @@ module.exports = {
       max: 10,
     },
     migrations: {
+      directory: './db/migrations',
       tableName: 'migrations',
     },
   },
