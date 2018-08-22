@@ -71,3 +71,7 @@ typings/
 
 # Serverless directories
 .serverless
+
+#builds
+/public
+/client/dist
