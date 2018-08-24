@@ -30,13 +30,16 @@ app.use( cookieSession( {
   maxAge: 24 * 60 * 60 * 1000,
 } ) );
 
+// Catch all route redirects to index.html so react router can take over
+app.get( '/*', ( req, res ) => {
+  console.log( 'HERE' );
+  res.sendFile( path.join( __dirname, './public/index.html' ), ( err ) => {
+    if ( err ) {
+      res.status( 500 ).send( err );
+    }
+  } );
+} );
+
 app.use( '/api', indexRouter );
 app.use( '/api/recipes', recipesRouter );
-
-// catch 404 and forward to error handler
-// app.use( ( req, res, next ) => {
-//   next( createError( 404 ) );
-// } );
-
-
 module.exports = app;
