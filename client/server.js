@@ -9,7 +9,7 @@ new WebpackDevServer( webpack( config ), {
     poll: 1000,
     ignored: /node_modules/,
   },
-  // historyApiFallback: true,
+  historyApiFallback: true,
   proxy: {
     '/api': {
       target: 'http://localhost:3001',
