@@ -45,6 +45,7 @@ class Recipes extends Component {
       recipes: () => 'All Recipes',
       myrecipes: () => 'My Recipes',
       random: () => 'Random Ideas',
+      search: () => 'Search Results',
     };
     const titleFn = titleMap[this.props.rootPath];
     if ( titleFn ) {
