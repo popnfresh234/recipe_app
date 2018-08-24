@@ -168,6 +168,27 @@ router.get( '/random', verifyUser, ( req, res, next ) => {
 } );
 
 //* ********************************************
+//* ** GET /api/recipes/search ***
+//* ** Favorite or Unfavorite a recipe
+//* ********************************************
+
+router.get( '/search', verifyUser, ( req, res, next ) => {
+  console.log( req.query.q );
+  const query = req.query.q;
+  knex.select()
+    .from( 'recipes' )
+    .where( 'name', 'ilike', `%${query}%` )
+    .orWhere( 'description', 'ilike', `%${query}%` )
+    .then( ( results ) => {
+      res.send( results );
+    } )
+    .catch( ( err ) => {
+      console.log( err );
+      res.status( 400 ).send( 'Bad Request' );
+    } );
+} );
+
+//* ********************************************
 //* ** GET /api/recipes/:recipe_id' ***
 //* ** Get a specific recipe
 //* ********************************************
@@ -267,5 +288,6 @@ router.put( '/favorite/:recipe_id', verifyUser, ( req, res, next ) => {
       res.status( 400 ).send( 'Bad favorite' );
     } );
 } );
+
 module.exports = router;
 

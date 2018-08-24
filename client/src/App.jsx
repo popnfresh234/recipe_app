@@ -96,6 +96,17 @@ class App extends Component {
             component={Recipes}
           />
           <PrivateRoute
+            path="/search"
+            exact
+            isLoggedIn={this.state.isLoggedIn}
+            rootPath="search"
+            key="search"
+            userId={this.state.userId}
+            cardsPerRow={4}
+            handleLoading={this.handleLoading}
+            component={Recipes}
+          />
+          <PrivateRoute
             path="/recipe-details/:id"
             exact
             isLoggedIn={this.state.isLoggedIn}
