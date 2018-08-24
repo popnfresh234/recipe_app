@@ -11,16 +11,26 @@ class Recipes extends Component {
     this.state = {
       recipes: [],
     };
+    this.fetchData.bind( this );
   }
 
 
   componentDidMount() {
+    this.fetchData( this.props );
+  }
+
+  componentWillReceiveProps( nextProps ) {
+    this.fetchData( nextProps );
+  }
+
+
+  fetchData( props ) {
     const pageMap = {
       recipes: () => '/api/recipes',
-      myrecipes: () => `/api/${this.props.userId}/recipes/`,
+      myrecipes: () => `/api/${props.userId}/recipes/`,
       random: () => '/api/recipes/random',
+      search: () => `/api/recipes/search${props.location.search}`,
     };
-
 
     const fn = pageMap[this.props.rootPath];
     if ( fn ) {
@@ -37,7 +47,6 @@ class Recipes extends Component {
         } );
     }
   }
-
 
   render() {
     let title = '';
