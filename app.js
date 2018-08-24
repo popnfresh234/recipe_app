@@ -31,6 +31,10 @@ app.use( cookieSession( {
 } ) );
 
 // Catch all route redirects to index.html so react router can take over
+
+app.use( '/api', indexRouter );
+app.use( '/api/recipes', recipesRouter );
+
 app.get( '/*', ( req, res ) => {
   console.log( 'HERE' );
   res.sendFile( path.join( __dirname, './public/index.html' ), ( err ) => {
@@ -40,6 +44,4 @@ app.get( '/*', ( req, res ) => {
   } );
 } );
 
-app.use( '/api', indexRouter );
-app.use( '/api/recipes', recipesRouter );
 module.exports = app;
