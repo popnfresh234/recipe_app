@@ -56,14 +56,59 @@ class ImageUpload extends Component {
 
   resizeImage( image, maxWidth, maxHeight, quality, extension ) {
     const canvas = document.createElement( 'canvas' );
+    const ctx = canvas.getContext( '2d' );
     canvas.width = maxWidth;
     canvas.height = maxHeight;
-    const ctx = canvas.getContext( '2d' );
-    const sourceX = ( image.width / 2 ) - ( maxWidth / 2 );
-    const sourceY = ( image.height / 2 ) - ( maxHeight / 2 );
     ctx.fillStyle = '#FFFFE0';
     ctx.fillRect( 0, 0, maxWidth, maxHeight );
-    ctx.drawImage( image, sourceX, sourceY, maxWidth, maxHeight, 0, 0, maxWidth, maxHeight );
+    let sX = 0;
+    let sY = 0;
+    let dX = 0;
+    let dY = 0;
+    let sourceW = image.width;
+    let sourceH = image.height;
+    let destinationW = image.width;
+    let destinationH = image.height;
+
+
+    if ( image.width < maxHeight && image.height < maxHeight ) {
+      // Case 1: Both width && height < max dimension
+      // draw source image in center of 1000 * 1000 box
+      dX = ( maxWidth - image.width ) / 2;
+      dY = ( maxHeight - image.height ) / 2;
+    } else if ( image.width > maxWidth && image.height < maxHeight ) {
+      // Case 2: Width is > 1000, height < 1000 (wide rectangle) center crop width
+      dY = ( maxHeight - image.height ) / 2;
+      sX = ( image.width / 2 ) - ( maxWidth / 2 );
+      sourceW = maxWidth;
+      destinationW = maxWidth;
+    } else if ( image.width < maxWidth && image.height > maxHeight ) {
+      // Case 3:  Width < 1000, height > 1000 (tall rectangle) center crop height
+      dX = ( maxWidth - image.width ) / 2;
+      sY = ( image.width / 2 ) - ( maxWidth / 2 );
+      sourceH = maxHeight;
+      destinationH = maxHeight;
+    } else if ( image.width > maxWidth && image.height > maxHeight ) {
+    // Case 4:  Width && height > 1000
+    // scale image so smallest of width/height === 1000, crop center of resulting image
+      const smallestSide = Math.min( image.width, image.height );
+      const multiplier = maxWidth / smallestSide;
+      const resizedWidth = image.width * multiplier;
+      const resizedHeight = image.height * multiplier;
+      destinationW = maxWidth;
+      destinationH = maxHeight;
+      if ( image.width > image.height ) {
+        const startX = ( resizedWidth / 2 ) - ( maxWidth / 2 );
+        sX = startX / multiplier;
+        sourceW = maxWidth / multiplier;
+      } else if ( image.height > image.width ) {
+        const startY = ( resizedHeight / 2 ) - ( maxWidth / 2 );
+        sY = startY / multiplier;
+        sourceH = maxHeight / multiplier;
+      }
+    }
+
+    ctx.drawImage( image, sX, sY, sourceW, sourceH, dX, dY, destinationW, destinationH );
     return canvas.toDataURL( `image/${extension}`, quality );
   }
 
