@@ -22,9 +22,16 @@ class ImageUpload extends Component {
   }
 
   handleChange( e ) {
+    let oldFileName = this.state.fileUrl.replace( 'https://s3-us-west-2.amazonaws.com/big-cooking-recipe-images/', '' );
+    oldFileName = oldFileName.replace( /\.[^/.]+$/, '' );
+    let filename = '';
+    if ( this.props.editing && oldFileName !== 'place-holder' ) {
+      filename = oldFileName;
+    } else {
+      filename = uuidv4();
+    }
     const file = e.target.files[0];
-    const ext = file.name.replace( /^.*\./, '' );
-    this.resize( file, 1000, 1000, ext, ( resizedDataUrl ) => {
+    this.resize( file, 300, 300, 'png', ( resizedDataUrl ) => {
       this.setState( {
         fileUrl: resizedDataUrl,
       } );
@@ -33,8 +40,8 @@ class ImageUpload extends Component {
       for ( let i = 0; i < binary.length; i++ ) {
         array.push( binary.charCodeAt( i ) );
       }
-      const blob = new Blob( [new Uint8Array( array )], { type: `image/${ext}` } );
-      const newFile = new File( [blob], `${uuidv4()}.${ext}`, { type: blob.type } );
+      const blob = new Blob( [new Uint8Array( array )], { type: 'image/png' } );
+      const newFile = new File( [blob], `${filename}.png`, { type: blob.type } );
       this.props.addImage( newFile, this.state.fileUrl );
     } );
   }
