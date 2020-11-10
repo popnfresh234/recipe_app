@@ -74,3 +74,6 @@ typings/
 
 #builds
 /client/dist
+
+#db backup
+latest.dump
