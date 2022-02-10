@@ -50,7 +50,7 @@
     "http-server": "^0.10.0",
     "less": "^2.7.3",
     "less-loader": "^4.1.0",
-    "node-sass": "4.5.0",
+    "node-sass": "7.0.0",
     "rimraf": "^2.6.2",
     "sass-loader": "6.0.0",
     "semantic-ui-less": "2.2.14",
